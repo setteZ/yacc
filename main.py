@@ -268,10 +268,8 @@ if __name__ == "__main__":
 
     logging_level = logging.NOTSET
     if args.debug:
-        print("debug")
         logging_level = logging.DEBUG
     if args.info:
-        print("info")
         logging_level = logging.INFO
 
     logging.getLogger().setLevel(logging_level)
