@@ -22,7 +22,7 @@ class MainApplication(tk.Frame):
 
         self.__populate_window()
 
-    def __callback_frame(self, *args):
+    def __callback_itf(self, *args):
         """
         callback for interface selection
         """
@@ -65,7 +65,7 @@ class MainApplication(tk.Frame):
         interface_opt.config(font=("Helvetica", 12))
         interface_opt.pack()
 
-        self.interface_variable.trace("w", self.__callback_frame)
+        self.interface_variable.trace("w", self.__callback_itf)
 
         baudrate_frame = tk.LabelFrame(self.parent, text="baudrate")
         baudrate_frame.grid(column=0, row=2)
