@@ -5,10 +5,77 @@ Structure for a CAN GUI
 import logging
 import tkinter as tk
 
-window = tk.Tk()
+
+def populate_window(window):
+    """
+    function to create the config window
+    """
+
+    window.title("Hello")
+    window.resizable(False, False)
+    window.configure(background="white")
+
+    file_frame = tk.LabelFrame(window, text="file")
+    file_frame.grid(column=0, row=0)
+
+    file_entry = tk.Entry(file_frame)
+    file_button = tk.Button(file_frame, text="select file")
+    file_entry.pack()
+    file_button.pack()
+
+    interface_frame = tk.LabelFrame(window, text="interface")
+    interface_frame.grid(column=0, row=1)
+    interface_list = ["peak", "kvaser", "ixxat"]
+    interface_variable = tk.StringVar(interface_frame)
+    INTERFACE = interface_list[0]
+    interface_variable.set(INTERFACE)
+    interface_opt = tk.OptionMenu(interface_frame, interface_variable, *interface_list)
+    interface_opt.config(font=("Helvetica", 12))
+    interface_opt.pack()
+
+    def callback_frame(*args):
+        """
+        callback for interface selection
+        """
+        interface = interface_variable.get()
+        logging.info(interface)
+
+    interface_variable.trace("w", callback_frame)
+
+    baudrate_frame = tk.LabelFrame(window, text="baudrate")
+    baudrate_frame.grid(column=0, row=2)
+    baudrate_list = ["125", "250", "500"]
+    variable_br = tk.StringVar(baudrate_frame)
+    variable_br.set(baudrate_list[1])
+    baudrate_opt = tk.OptionMenu(baudrate_frame, variable_br, *baudrate_list)
+    baudrate_opt.config(font=("Helvetica", 12))
+    baudrate_opt.pack()
+
+    def callback_br(*args):
+        """
+        callback for baudrate selection
+        """
+        baudrate = variable_br.get()
+        logging.info(baudrate)
+
+    variable_br.trace("w", callback_br)
+
+    nodeid_frame = tk.LabelFrame(window, text="node id")
+    nodeid_frame.grid(column=0, row=3)
+    nodeid_entry = tk.Entry(nodeid_frame)
+    nodeid_entry.pack()
+
+    button_frame = tk.Frame(window)
+    button_frame.grid(column=0, row=4)
+    connect_button = tk.Button(
+        button_frame, text="connect", command=lambda: create_new_window(window)
+    )
+    exit_button = tk.Button(button_frame, text="exit", command=window.destroy)
+    connect_button.grid(column=0, row=0)
+    exit_button.grid(column=1, row=0)
 
 
-def create_new_window():
+def create_new_window(window):
     """
     new window creation after "connect" button is clicked
     """
@@ -150,73 +217,8 @@ def create_new_window():
     new_exit_button.grid(column=1, row=0)
 
 
-# window.geometry("600x600")
-window.title("Hello")
-window.resizable(False, False)
-window.configure(background="white")
-
-file_frame = tk.LabelFrame(window, text="file")
-file_frame.grid(column=0, row=0)
-
-file_entry = tk.Entry(file_frame)
-file_button = tk.Button(file_frame, text="select file")
-file_entry.pack()
-file_button.pack()
-
-
-interface_frame = tk.LabelFrame(window, text="interface")
-interface_frame.grid(column=0, row=1)
-interface_list = ["peak", "kvaser", "ixxat"]
-interface_variable = tk.StringVar(interface_frame)
-INTERFACE = interface_list[0]
-interface_variable.set(INTERFACE)
-interface_opt = tk.OptionMenu(interface_frame, interface_variable, *interface_list)
-interface_opt.config(font=("Helvetica", 12))
-interface_opt.pack()
-
-
-def callback_frame(*args):
-    """
-    callback for interface selection
-    """
-    interface = interface_variable.get()
-    logging.info(interface)
-
-
-interface_variable.trace("w", callback_frame)
-
-baudrate_frame = tk.LabelFrame(window, text="baudrate")
-baudrate_frame.grid(column=0, row=2)
-baudrate_list = ["125", "250", "500"]
-variable_br = tk.StringVar(baudrate_frame)
-variable_br.set(baudrate_list[1])
-baudrate_opt = tk.OptionMenu(baudrate_frame, variable_br, *baudrate_list)
-baudrate_opt.config(font=("Helvetica", 12))
-baudrate_opt.pack()
-
-
-def callback_br(*args):
-    """
-    callback for baudrate selection
-    """
-    baudrate = variable_br.get()
-    logging.info(baudrate)
-
-
-variable_br.trace("w", callback_br)
-
-nodeid_frame = tk.LabelFrame(window, text="node id")
-nodeid_frame.grid(column=0, row=3)
-nodeid_entry = tk.Entry(nodeid_frame)
-nodeid_entry.pack()
-
-button_frame = tk.Frame(window)
-button_frame.grid(column=0, row=4)
-connect_button = tk.Button(button_frame, text="connect", command=create_new_window)
-exit_button = tk.Button(button_frame, text="exit", command=window.destroy)
-connect_button.grid(column=0, row=0)
-exit_button.grid(column=1, row=0)
-
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.INFO)
+    window = tk.Tk()
+    populate_window(window)
     window.mainloop()
