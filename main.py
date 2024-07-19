@@ -4,7 +4,9 @@ Structure for a CAN GUI
 
 import argparse
 import logging
+import os
 import tkinter as tk
+from tkinter import filedialog as fd
 
 
 class MainApplication(tk.Frame):
@@ -19,6 +21,7 @@ class MainApplication(tk.Frame):
         self.variable_grp = None
         self.idx_text = None
         self.sub_text = None
+        self.file_str_entry = None
 
         self.__populate_window()
 
@@ -36,6 +39,14 @@ class MainApplication(tk.Frame):
         baudrate = self.variable_br.get()
         logging.info(baudrate)
 
+    def __select_file(self):
+        filetypes = (("eds files", "*.eds"), ("All files", "*.*"))
+
+        filename = fd.askopenfilename(
+            title="Open a file", initialdir=os.getcwd(), filetypes=filetypes
+        )
+        self.file_str_entry.set(filename)
+
     def __populate_window(self):
         """
         function to create the config window
@@ -48,9 +59,12 @@ class MainApplication(tk.Frame):
         file_frame = tk.LabelFrame(self.parent, text="file")
         file_frame.grid(column=0, row=0)
 
-        file_entry = tk.Entry(file_frame)
+        self.file_str_entry = tk.StringVar()
+        file_entry = tk.Entry(file_frame, textvariable=self.file_str_entry)
         file_entry.grid(column=0, row=0)
-        file_button = tk.Button(file_frame, text="select file")
+        file_button = tk.Button(
+            file_frame, text="select file", command=self.__select_file
+        )
         file_button.grid(column=1, row=0)
 
         interface_frame = tk.LabelFrame(self.parent, text="interface")
@@ -129,6 +143,7 @@ class MainApplication(tk.Frame):
         # self.interface_variable.get()
         # self.variable_br.get()
         # self.nodeid_entry.get()
+        # self.file_str_entry
 
         new_window = tk.Tk()
 
