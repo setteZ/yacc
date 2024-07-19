@@ -26,14 +26,14 @@ class MainApplication(tk.Frame):
 
         self.__populate_window()
 
-    def __callback_itf(self, *args):
+    def __callback_itf(self):
         """
         callback for interface selection
         """
         interface = self.interface_variable.get()
         logging.info(interface)
 
-    def __callback_br(self, *args):
+    def __callback_br(self):
         """
         callback for baudrate selection
         """
@@ -108,30 +108,30 @@ class MainApplication(tk.Frame):
         connect_button.grid(column=0, row=0)
         exit_button.grid(column=1, row=0)
 
-    def __callback_ele(self, *args):
+    def __callback_ele(self):
         """
         callback for element selection
         """
         element = self.variable_ele.get()
         self.idx_text.set(element)
 
-    def __callback_grp(self, *args):
+    def __callback_grp(self):
         """
         callback for group selection
         """
         group = self.variable_grp.get()
         self.sub_text.set(group)
 
-    def __entry_typing(self, *args):
+    def __entry_typing(self):
         """
         entry_typing reaction
         """
         logging.info("entry typing reaction")
 
-    def __read_action(self, *args):
+    def __read_action(self):
         logging.info("read action")
 
-    def __write_action(self, *args):
+    def __write_action(self):
         logging.info("write action")
 
     def create_new_window(self):
