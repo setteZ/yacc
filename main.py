@@ -2,6 +2,7 @@
 Structure for a CAN GUI
 """
 
+import argparse
 import logging
 import tkinter as tk
 
@@ -218,7 +219,21 @@ def create_new_window(window):
 
 
 if __name__ == "__main__":
-    logging.getLogger().setLevel(logging.INFO)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--info", action="store_true", help=argparse.SUPPRESS)
+    args = parser.parse_args()
+
+    logging_level = logging.NOTSET
+    if args.debug:
+        print("debug")
+        logging_level = logging.DEBUG
+    if args.info:
+        print("info")
+        logging_level = logging.INFO
+
+    logging.getLogger().setLevel(logging_level)
+
     window = tk.Tk()
     populate_window(window)
     window.mainloop()
