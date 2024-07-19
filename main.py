@@ -80,8 +80,8 @@ class MainApplication(tk.Frame):
 
         nodeid_frame = tk.LabelFrame(self.parent, text="node id")
         nodeid_frame.grid(column=0, row=3)
-        nodeid_entry = tk.Entry(nodeid_frame)
-        nodeid_entry.pack()
+        self.nodeid_entry = tk.Entry(nodeid_frame)
+        self.nodeid_entry.pack()
 
         button_frame = tk.Frame(self.parent)
         button_frame.grid(column=0, row=4)
@@ -123,6 +123,13 @@ class MainApplication(tk.Frame):
         new window creation after "connect" button is clicked
         """
         self.parent.destroy()
+
+        # TODO get the config info and pass them to create the connection to the CAN device
+        # variable used for the configuration:
+        # self.interface_variable.get()
+        # self.variable_br.get()
+        # self.nodeid_entry.get()
+
         new_window = tk.Tk()
 
         # entry frame
