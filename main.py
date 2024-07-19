@@ -49,9 +49,9 @@ class MainApplication(tk.Frame):
         file_frame.grid(column=0, row=0)
 
         file_entry = tk.Entry(file_frame)
+        file_entry.grid(column=0, row=0)
         file_button = tk.Button(file_frame, text="select file")
-        file_entry.pack()
-        file_button.pack()
+        file_button.grid(column=1, row=0)
 
         interface_frame = tk.LabelFrame(self.parent, text="interface")
         interface_frame.grid(column=0, row=1)
