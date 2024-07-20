@@ -51,7 +51,10 @@ class Device:
             self.__version += "-alpha." + ALPHA
         if BETA != "":
             self.__version += "-beta." + BETA
-        self.__filename = filename
+        if filename == "":
+            self.__filename = None
+        else:
+            self.__filename = filename
         self.__baudrate = baudrate
         self.__nodeid = nodeid
         if interface not in ["peak", "kvaser", "ixxat"]:
