@@ -7,6 +7,9 @@ import os
 import tkinter as tk
 from tkinter import filedialog as fd
 
+# local module
+from device import Device
+
 VERSION = "0.1.0"
 ALPHA = "1"
 BETA = ""
@@ -161,19 +164,32 @@ class App(tk.Frame):
         """
         new window creation after "connect" button is clicked
         """
-        self.config_window.withdraw()
+        try:
+            device = Device(
+                self.file_str_entry.get(),
+                self.variable_br.get(),
+                self.variable_node.get(),
+                self.interface_variable.get(),
+            )
+        except Exception as err:
+            logging.debug(err)
+            tk.messagebox.showerror("", "there something wrong with the configuration")
+        else:
 
-        # TODO pass the config params to create the connection to the CAN device
+            device.connect()
+            self.config_window.withdraw()
 
-        logging.info(
-            "interface = %s | baudrate = %s | node-id = %s | eds = %s",
-            self.interface_variable.get(),
-            self.variable_br.get(),
-            self.variable_node.get(),
-            self.file_str_entry.get(),
-        )
+            # TODO pass the config params to create the connection to the CAN device
 
-        self.parent.deiconify()
+            logging.info(
+                "interface = %s | baudrate = %s | node-id = %s | eds = %s",
+                self.interface_variable.get(),
+                self.variable_br.get(),
+                self.variable_node.get(),
+                self.file_str_entry.get(),
+            )
+
+            self.parent.deiconify()
 
     def __info(self):
         tk.messagebox.showinfo("info", f"version {self.__version}")
