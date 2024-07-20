@@ -107,7 +107,6 @@ class App(tk.Frame):
         interface_opt = tk.OptionMenu(
             interface_frame, self.interface_variable, *interface_list
         )
-        interface_opt.config(font=("Helvetica", 12))
         interface_opt.pack()
 
         self.interface_variable.trace("w", self.__callback_itf)
@@ -118,7 +117,6 @@ class App(tk.Frame):
         self.variable_br = tk.StringVar(baudrate_frame)
         self.variable_br.set(baudrate_list[1])
         baudrate_opt = tk.OptionMenu(baudrate_frame, self.variable_br, *baudrate_list)
-        baudrate_opt.config(font=("Helvetica", 12))
         baudrate_opt.pack()
 
         self.variable_br.trace("w", self.__callback_br)
@@ -280,7 +278,6 @@ class App(tk.Frame):
         self.element_opt = tk.OptionMenu(
             element_frame, self.variable_ele, *element_list
         )
-        self.element_opt.config(font=("Helvetica", 12))
         self.element_opt.pack()
 
         self.variable_ele.trace("w", self.__callback_ele)
@@ -292,7 +289,6 @@ class App(tk.Frame):
         self.variable_grp = tk.StringVar(group_frame)
         self.variable_grp.set("")
         self.group_opt = tk.OptionMenu(group_frame, self.variable_grp, *group_list)
-        self.group_opt.config(font=("Helvetica", 12))
         self.group_opt.pack()
 
         self.variable_grp.trace("w", self.__callback_grp)
