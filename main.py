@@ -311,13 +311,10 @@ if __name__ == "__main__":
     parser.add_argument("--info", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
 
-    logging_level = logging.NOTSET
-    if args.debug:
-        logging_level = logging.DEBUG
     if args.info:
-        logging_level = logging.INFO
-
-    logging.getLogger().setLevel(logging_level)
+        logging.basicConfig(level=logging.INFO)
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
 
     window = tk.Tk()
     MainApplication(window)
