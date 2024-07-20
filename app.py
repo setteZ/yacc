@@ -46,6 +46,7 @@ class App(tk.Frame):
         self.value_hex_text = None
         self.value_float_text = None
         self.length_text = None
+        self.element_opt = None
 
         self.parent.title("")
         self.parent.resizable(False, False)
@@ -216,6 +217,20 @@ class App(tk.Frame):
                 self.config_window.withdraw()
                 self.parent.deiconify()
 
+                if os.path.exists(self.file_str_entry.get()):
+                    group_list = self.device.get_group_name_list()
+                    logging.debug(group_list)
+                    self.variable_ele.set("")
+                    menu = self.group_opt["menu"]
+                    menu.delete(0, "end")
+                    for string in group_list:
+                        menu.add_command(
+                            label=string,
+                            command=lambda value=string: self.variable_ele.set(value),
+                        )
+                else:
+                    logging.info("no file")
+
     def __info(self):
         message = f"app version: {self.__version}\ndevice version: {self.device.get_version()}"
         tk.messagebox.showinfo("info", message)
@@ -242,12 +257,14 @@ class App(tk.Frame):
         ## element
         element_frame = tk.LabelFrame(entry_frame, text="element")
         element_frame.grid(column=0, row=0)
-        element_list = ["element1", "element2", "element3"]
+        element_list = [""]
         self.variable_ele = tk.StringVar(element_frame)
         self.variable_ele.set("")
-        element_opt = tk.OptionMenu(element_frame, self.variable_ele, *element_list)
-        element_opt.config(font=("Helvetica", 12))
-        element_opt.pack()
+        self.element_opt = tk.OptionMenu(
+            element_frame, self.variable_ele, *element_list
+        )
+        self.element_opt.config(font=("Helvetica", 12))
+        self.element_opt.pack()
 
         self.variable_ele.trace("w", self.__callback_ele)
 
