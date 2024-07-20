@@ -129,7 +129,11 @@ class Device:
         """
         get the list of the index name of the object dictionary
         """
-        return self.__node.object_dictionary.keys()
+        names = []
+        self.__node.object_dictionary.values()
+        for obj in self.__node.object_dictionary.values():
+            names.append(obj.name)
+        return names
 
 
 if __name__ == "__main__":
