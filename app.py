@@ -326,6 +326,7 @@ class App(tk.Frame):
             command_frame, text="write", command=self.__write_action
         )
         write_button.grid(column=0, row=1)
+        write_button.grid_forget()
 
         # data frame
         data_frame = tk.Frame(self.parent)
