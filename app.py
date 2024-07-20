@@ -192,13 +192,15 @@ class App(tk.Frame):
             )
         except Exception as err:
             logging.debug(err)
-            tk.messagebox.showerror("", "there something wrong with the configuration")
+            tk.messagebox.showerror(
+                "connect", "there something wrong with the configuration"
+            )
         else:
             try:
                 self.device.connect()
             except Exception as err:
                 logging.debug(err)
-                tk.messagebox.showerror("", "I can't connect to the device")
+                tk.messagebox.showerror("connect", "I can't connect to the device")
             else:
                 logging.info(
                     "interface = %s | baudrate = %s | node-id = %s | eds = %s",
