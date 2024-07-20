@@ -112,12 +112,13 @@ class Device:
             logging.debug(err)
             raise err
         else:
+            data.length = len(data.bytes)
             ba = bytearray(data.bytes)
             ba.reverse()
             data.hex = "".join(f"{x:02X}" for x in ba)
             data.signed = int.from_bytes(bytes=data.bytes, byteorder="little")
-            data.float = struct.unpack("!f", ba)[0]
-            data.length = len(data.bytes)
+            if data.length == 4:
+                data.float = struct.unpack("!f", ba)[0]
             return data
 
     def write_entry(self):

@@ -190,7 +190,10 @@ class App(tk.Frame):
             self.value_unsigned_text.set(str(data.unsigned))
             self.value_signed_text.set(str(data.signed))
             self.value_hex_text.set(data.hex)
-            self.value_float_text.set(str(data.float))
+            if data.length == 4:
+                self.value_float_text.set(str(data.float))
+            else:
+                self.value_float_text.set("-")
             self.length_text.set(str(data.length))
 
     def __write_action(self):
