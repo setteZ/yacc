@@ -99,7 +99,7 @@ class MainApplication(tk.Frame):
 
         nodeid_frame = tk.LabelFrame(self.config_window, text="node id")
         nodeid_frame.grid(column=0, row=3)
-        self.variable_node = tk.StringVar(nodeid_frame)
+        self.variable_node = tk.StringVar(nodeid_frame, value="1")
         nodeid_entry = tk.Entry(nodeid_frame, textvariable=self.variable_node)
         nodeid_entry.pack()
 
