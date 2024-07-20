@@ -167,8 +167,8 @@ class App(tk.Frame):
         try:
             device = Device(
                 self.file_str_entry.get(),
-                self.variable_br.get(),
-                self.variable_node.get(),
+                int(self.variable_br.get()),
+                int(self.variable_node.get()),
                 self.interface_variable.get(),
             )
         except Exception as err:
