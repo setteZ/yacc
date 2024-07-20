@@ -214,7 +214,8 @@ class App(tk.Frame):
                 self.parent.deiconify()
 
     def __info(self):
-        tk.messagebox.showinfo("info", f"version {self.__version}")
+        message = f"app version: {self.__version}\ndevice version: {self.device.get_version()}"
+        tk.messagebox.showinfo("info", message)
 
     def __populate_parent(self):
         """

@@ -9,8 +9,8 @@ import struct
 # requirements
 import canopen
 
-VERSION = "0.1.0-b"
-ALPHA = ""
+VERSION = "0.1.0"
+ALPHA = "1"
 BETA = ""
 
 if ALPHA != "" and BETA != "":
