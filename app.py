@@ -153,6 +153,7 @@ class App(tk.Frame):
         group = self.variable_grp.get()
         if group != "":
             self.sub_text.set(group)
+            self.variable_ele.set("")
 
     def __entry_typing(self, *args):
         """
