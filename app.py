@@ -47,6 +47,7 @@ class App(tk.Frame):
         self.value_float_text = None
         self.length_text = None
         self.element_opt = None
+        self.group_opt = None
 
         self.parent.title("")
         self.parent.resizable(False, False)
@@ -274,9 +275,9 @@ class App(tk.Frame):
         group_list = ["group1", "group2", "group3"]
         self.variable_grp = tk.StringVar(group_frame)
         self.variable_grp.set("")
-        group_opt = tk.OptionMenu(group_frame, self.variable_grp, *group_list)
-        group_opt.config(font=("Helvetica", 12))
-        group_opt.pack()
+        self.group_opt = tk.OptionMenu(group_frame, self.variable_grp, *group_list)
+        self.group_opt.config(font=("Helvetica", 12))
+        self.group_opt.pack()
 
         self.variable_grp.trace("w", self.__callback_grp)
 
