@@ -175,21 +175,22 @@ class App(tk.Frame):
             logging.debug(err)
             tk.messagebox.showerror("", "there something wrong with the configuration")
         else:
+            try:
+                device.connect()
+            except Exception as err:
+                logging.debug(err)
+                tk.messagebox.showerror("", "I can't connect to the device")
+            else:
+                logging.info(
+                    "interface = %s | baudrate = %s | node-id = %s | eds = %s",
+                    self.interface_variable.get(),
+                    self.variable_br.get(),
+                    self.variable_node.get(),
+                    self.file_str_entry.get(),
+                )
 
-            device.connect()
-            self.config_window.withdraw()
-
-            # TODO pass the config params to create the connection to the CAN device
-
-            logging.info(
-                "interface = %s | baudrate = %s | node-id = %s | eds = %s",
-                self.interface_variable.get(),
-                self.variable_br.get(),
-                self.variable_node.get(),
-                self.file_str_entry.get(),
-            )
-
-            self.parent.deiconify()
+                self.config_window.withdraw()
+                self.parent.deiconify()
 
     def __info(self):
         tk.messagebox.showinfo("info", f"version {self.__version}")
