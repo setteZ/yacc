@@ -325,8 +325,8 @@ class App(tk.Frame):
 
     def __disconnect(self):
         logging.info("disconnect reaction")
-        # TODO disconnect from the CAN device
 
+        self.device.disconnect()
         self.parent.withdraw()
         self.config_window.deiconify()
 

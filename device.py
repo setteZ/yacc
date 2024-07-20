@@ -74,6 +74,9 @@ class Device:
             )
             self.__node.sdo.RESPONSE_TIMEOUT = 1
 
+    def disconnect(self):
+        self.__network.disconnect()
+
     def read_entry(self):
         """
         read entry method
