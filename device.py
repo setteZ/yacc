@@ -39,8 +39,7 @@ class Device:
         self.__baudrate = baudrate
         self.__nodeid = nodeid
         if interface not in ["peak", "kvaser", "ixxat"]:
-            # TODO rise an error
-            pass
+            raise Exception("interface not available")
         if interface == "peak":
             self.__interface = "pcan"
             self.__channel = "PCAN_USBBUS1"
