@@ -141,6 +141,7 @@ class Device:
         """
         names = []
         obj = self.__node.object_dictionary[idx_name]
+        logging.info("%s %s", idx_name, obj)
         if isinstance(obj, canopen.objectdictionary.ODRecord):
             for subobj in obj.values():
                 names.append(subobj.name)
@@ -152,6 +153,11 @@ class Device:
         """
         obj = self.__node.object_dictionary[name]
         return f'{obj.index:X}'
+
+    def get_sub(self, group_name: str, entry_name:str)->str:
+        obj = self.__node.object_dictionary[group_name][entry_name]
+        return f'{obj.subindex:X}'
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

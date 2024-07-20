@@ -146,7 +146,7 @@ class App(tk.Frame):
         """
         element = self.variable_ele.get()
         if element != "":
-            self.idx_text.set(element)
+            self.sub_text.set(self.device.get_sub(self.variable_grp.get(), element))
 
     def __callback_grp(self, *args):
         """
@@ -166,7 +166,7 @@ class App(tk.Frame):
 
         if group != "":
             idx = self.device.idx_from_name(self.variable_grp.get())
-            self.sub_text.set(idx)
+            self.idx_text.set(idx)
             self.variable_ele.set("")
 
     def __entry_typing(self, *args):
@@ -239,7 +239,7 @@ class App(tk.Frame):
                     for string in group_list:
                         menu.add_command(
                             label=string,
-                            command=lambda value=string: self.variable_ele.set(value),
+                            command=lambda value=string: self.variable_grp.set(value),
                         )
                 else:
                     logging.info("no file")
@@ -269,7 +269,7 @@ class App(tk.Frame):
         entry_frame.grid(column=0, row=0)
         ## element
         element_frame = tk.LabelFrame(entry_frame, text="element")
-        element_frame.grid(column=0, row=0)
+        element_frame.grid(column=1, row=0)
         element_list = [""]
         self.variable_ele = tk.StringVar(element_frame)
         self.variable_ele.set("")
@@ -283,7 +283,7 @@ class App(tk.Frame):
 
         ## group
         group_frame = tk.LabelFrame(entry_frame, text="group")
-        group_frame.grid(column=1, row=0)
+        group_frame.grid(column=0, row=0)
         group_list = ["group1", "group2", "group3"]
         self.variable_grp = tk.StringVar(group_frame)
         self.variable_grp.set("")
