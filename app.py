@@ -40,6 +40,11 @@ class App(tk.Frame):
         self.file_str_entry = None
         self.variable_node = None
         self.device = None
+        self.value_unsigned_text = None
+        self.value_signed_text = None
+        self.value_hex_text = None
+        self.value_float_text = None
+        self.length_text = None
 
         self.parent.title("")
         self.parent.resizable(False, False)
@@ -156,7 +161,20 @@ class App(tk.Frame):
         self.variable_ele.set("")
 
     def __read_action(self):
-        logging.info("read action")
+        try:
+            data = self.device.read_entry(
+                index=int(self.idx_text.get(), 16),
+                subindex=int(self.sub_text.get(), 16),
+            )
+        except Exception as err:
+            logging.debug(err)
+            tk.messagebox.showerror("read", "error while reading")
+        else:
+            self.value_unsigned_text.set(str(data.unsigned))
+            self.value_signed_text.set(str(data.signed))
+            self.value_hex_text.set(data.hex)
+            self.value_float_text.set(str(data.float))
+            self.length_text.set(str(data.length))
 
     def __write_action(self):
         logging.info("write action")
@@ -278,10 +296,10 @@ class App(tk.Frame):
         data_frame.grid(column=2, row=0)
 
         ## length
-        length_text = tk.StringVar()
+        self.length_text = tk.StringVar()
         length_frame = tk.LabelFrame(data_frame, text="length")
         length_frame.grid(column=0, row=0)
-        length_entry = tk.Entry(length_frame, textvariable=length_text)
+        length_entry = tk.Entry(length_frame, textvariable=self.length_text)
 
         length_entry.pack()
 
@@ -291,26 +309,28 @@ class App(tk.Frame):
 
         value_unsigned_label = tk.Label(value_frame, text="unsigned")
         value_unsigned_label.grid(column=0, row=0)
-        value_unsigned_text = tk.StringVar()
-        value_unsigned_entry = tk.Entry(value_frame, textvariable=value_unsigned_text)
+        self.value_unsigned_text = tk.StringVar()
+        value_unsigned_entry = tk.Entry(
+            value_frame, textvariable=self.value_unsigned_text
+        )
         value_unsigned_entry.grid(column=1, row=0)
 
         value_signed_label = tk.Label(value_frame, text="signed")
         value_signed_label.grid(column=0, row=1)
-        value_signed_text = tk.StringVar()
-        value_signed_entry = tk.Entry(value_frame, textvariable=value_signed_text)
+        self.value_signed_text = tk.StringVar()
+        value_signed_entry = tk.Entry(value_frame, textvariable=self.value_signed_text)
         value_signed_entry.grid(column=1, row=1)
 
         value_hex_label = tk.Label(value_frame, text="hex")
         value_hex_label.grid(column=0, row=2)
-        value_hex_text = tk.StringVar()
-        value_hex_entry = tk.Entry(value_frame, textvariable=value_hex_text)
+        self.value_hex_text = tk.StringVar()
+        value_hex_entry = tk.Entry(value_frame, textvariable=self.value_hex_text)
         value_hex_entry.grid(column=1, row=2)
 
         value_float_label = tk.Label(value_frame, text="float")
         value_float_label.grid(column=0, row=3)
-        value_float_text = tk.StringVar()
-        value_float_entry = tk.Entry(value_frame, textvariable=value_float_text)
+        self.value_float_text = tk.StringVar()
+        value_float_entry = tk.Entry(value_frame, textvariable=self.value_float_text)
         value_float_entry.grid(column=1, row=3)
 
         # main button frame

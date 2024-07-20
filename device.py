@@ -2,7 +2,9 @@
 Module for device interaction
 """
 
+import dataclasses
 import logging
+import struct
 
 # requirements
 import canopen
@@ -15,6 +17,20 @@ if ALPHA != "" and BETA != "":
     import sys
 
     sys.exit(1)
+
+
+@dataclasses.dataclass
+class Data:
+    """
+    class to have different rappresentation of the data
+    """
+
+    signed: int = 0
+    unsigned: int = 0
+    hex: str = "0"
+    float: float = 0.0
+    bytes: bytes = b"\x00"
+    length: int = 1
 
 
 class Device:
@@ -80,10 +96,24 @@ class Device:
         """
         self.__network.disconnect()
 
-    def read_entry(self):
+    def read_entry(self, index: int, subindex: int) -> Data:
         """
         read entry method
         """
+        data = Data()
+        try:
+            data.bytes = self.__node.sdo.upload(index=index, subindex=subindex)
+        except Exception as err:
+            logging.debug(err)
+            raise err
+        else:
+            ba = bytearray(data.bytes)
+            ba.reverse()
+            data.hex = "".join(f"{x:02X}" for x in ba)
+            data.signed = int.from_bytes(bytes=data.bytes, byteorder="little")
+            data.float = struct.unpack("!f", ba)[0]
+            data.length = len(data.bytes)
+            return data
 
     def write_entry(self):
         """
