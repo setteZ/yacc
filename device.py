@@ -28,7 +28,6 @@ class Device:
         baudrate=250,
         nodeid=1,
         interface="peak",
-        channel="PCAN_USBBUS1",
         output=None,
     ):
 
@@ -40,8 +39,16 @@ class Device:
         self.__filename = filename
         self.__baudrate = baudrate
         self.__nodeid = nodeid
-        self.__interface = interface
-        self.__channel = channel
+        if interface not in ["peak", "kvaser", "ixxat"]:
+            # TODO rise an error
+            pass
+        if interface == "peak":
+            self.__interface = "pcan"
+            self.__channel = "PCAN_USBBUS1"
+        else:
+            self.__interface = interface
+            self.__channel = 0
+
         self.__output = output
 
     def get_version(self):
