@@ -145,7 +145,7 @@ class MainApplication(tk.Frame):
         """
         new window creation after "connect" button is clicked
         """
-        self.config_window.destroy()
+        self.config_window.withdraw()
 
         # TODO pass the config params to create the connection to the CAN device
 
@@ -268,13 +268,18 @@ class MainApplication(tk.Frame):
         new_button_frame = tk.Frame(self.parent)
         new_button_frame.grid(column=0, row=4)
         new_connect_button = tk.Button(
-            new_button_frame, text="disconnect", command=self.parent.destroy
+            new_button_frame, text="disconnect", command=self.__disconnect
         )
-        new_exit_button = tk.Button(
-            new_button_frame, text="exit", command=self.parent.destroy
-        )
+        new_exit_button = tk.Button(new_button_frame, text="exit", command=self.__exit)
         new_connect_button.grid(column=0, row=0)
         new_exit_button.grid(column=1, row=0)
+
+    def __disconnect(self):
+        logging.info("disconnect reaction")
+        # TODO disconnect from the CAN device
+
+        self.parent.withdraw()
+        self.config_window.deiconify()
 
 
 if __name__ == "__main__":
