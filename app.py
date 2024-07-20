@@ -240,7 +240,7 @@ class App(tk.Frame):
         self.variable_grp.trace("w", self.__callback_grp)
 
         ## idx
-        idx_frame = tk.LabelFrame(entry_frame, text="idx")
+        idx_frame = tk.LabelFrame(entry_frame, text="index [0x]")
         idx_frame.grid(column=0, row=1)
         self.idx_text = tk.StringVar(idx_frame)
         idx_entry = tk.Entry(idx_frame, textvariable=self.idx_text)
@@ -250,7 +250,7 @@ class App(tk.Frame):
 
         ## sub
         self.sub_text = tk.StringVar()
-        sub_frame = tk.LabelFrame(entry_frame, text="sub")
+        sub_frame = tk.LabelFrame(entry_frame, text="subindex [0x]")
         sub_frame.grid(column=1, row=1)
         sub_entry = tk.Entry(sub_frame, textvariable=self.sub_text)
 
