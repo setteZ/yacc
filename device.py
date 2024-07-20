@@ -24,10 +24,10 @@ class Device:
 
     def __init__(
         self,
-        filename=None,
-        baudrate=250,
-        nodeid=1,
-        interface="peak",
+        filename: str | None = None,
+        baudrate: int = 250,
+        nodeid: int = 1,
+        interface: str = "peak",
     ):
 
         self.__version = VERSION
