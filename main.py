@@ -24,6 +24,8 @@ class MainApplication(tk.Frame):
         self.file_str_entry = None
         self.variable_node = None
 
+        self.parent.title("")
+        self.parent.resizable(False, False)
         self.__populate_parent()
         self.parent.withdraw()
         self.config_window = tk.Tk()
@@ -59,7 +61,6 @@ class MainApplication(tk.Frame):
 
         self.config_window.title("configuration")
         self.config_window.resizable(False, False)
-        self.config_window.configure(background="white")
 
         file_frame = tk.LabelFrame(self.config_window, text="file")
         file_frame.grid(column=0, row=0)
