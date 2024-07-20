@@ -28,7 +28,6 @@ class Device:
         baudrate=250,
         nodeid=1,
         interface="peak",
-        output=None,
     ):
 
         self.__version = VERSION
@@ -48,8 +47,6 @@ class Device:
         else:
             self.__interface = interface
             self.__channel = 0
-
-        self.__output = output
 
     def get_version(self):
         """
