@@ -33,6 +33,7 @@ class App(tk.Frame):
         if BETA != "":
             self.__version += "-beta." + BETA
         self.parent = parent
+        self.parent.protocol("WM_DELETE_WINDOW", self.__exit)
         self.variable_ele = None
         self.variable_grp = None
         self.idx_text = None
@@ -51,6 +52,7 @@ class App(tk.Frame):
         self.__populate_parent()
         self.parent.withdraw()
         self.config_window = tk.Tk()
+        self.config_window.protocol("WM_DELETE_WINDOW", self.__exit)
         self.__create_config_window()
 
     def __callback_itf(self, *args):
