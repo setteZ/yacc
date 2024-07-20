@@ -7,7 +7,7 @@ import os
 import tkinter as tk
 from tkinter import filedialog as fd
 
-APP_VERSION = "0.1.0-b"
+APP_VERSION = "0.1.0"
 ALPHA = ""
 BETA = ""
 
