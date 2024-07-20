@@ -120,20 +120,24 @@ class MainApplication(tk.Frame):
         callback for element selection
         """
         element = self.variable_ele.get()
-        self.idx_text.set(element)
+        if element != "":
+            self.idx_text.set(element)
 
     def __callback_grp(self, *args):
         """
         callback for group selection
         """
         group = self.variable_grp.get()
-        self.sub_text.set(group)
+        if group != "":
+            self.sub_text.set(group)
 
     def __entry_typing(self, *args):
         """
         entry_typing reaction
         """
-        logging.info("entry typing reaction")
+        logging.info("entry: idx %s sub %s", self.idx_text.get(), self.sub_text.get())
+        self.variable_grp.set("")
+        self.variable_ele.set("")
 
     def __read_action(self):
         logging.info("read action")
@@ -172,7 +176,7 @@ class MainApplication(tk.Frame):
         element_frame.grid(column=0, row=0)
         element_list = ["element1", "element2", "element3"]
         self.variable_ele = tk.StringVar(element_frame)
-        self.variable_ele.set(element_list[1])
+        self.variable_ele.set("")
         element_opt = tk.OptionMenu(element_frame, self.variable_ele, *element_list)
         element_opt.config(font=("Helvetica", 12))
         element_opt.pack()
@@ -184,7 +188,7 @@ class MainApplication(tk.Frame):
         group_frame.grid(column=1, row=0)
         group_list = ["group1", "group2", "group3"]
         self.variable_grp = tk.StringVar(group_frame)
-        self.variable_grp.set(group_list[1])
+        self.variable_grp.set("")
         group_opt = tk.OptionMenu(group_frame, self.variable_grp, *group_list)
         group_opt.config(font=("Helvetica", 12))
         group_opt.pack()
@@ -192,9 +196,9 @@ class MainApplication(tk.Frame):
         self.variable_grp.trace("w", self.__callback_grp)
 
         ## idx
-        self.idx_text = tk.StringVar()
         idx_frame = tk.LabelFrame(entry_frame, text="idx")
         idx_frame.grid(column=0, row=1)
+        self.idx_text = tk.StringVar(idx_frame)
         idx_entry = tk.Entry(idx_frame, textvariable=self.idx_text)
 
         idx_entry.bind("<Key>", self.__entry_typing)
@@ -205,6 +209,8 @@ class MainApplication(tk.Frame):
         sub_frame = tk.LabelFrame(entry_frame, text="sub")
         sub_frame.grid(column=1, row=1)
         sub_entry = tk.Entry(sub_frame, textvariable=self.sub_text)
+
+        sub_entry.bind("<Key>", self.__entry_typing)
         sub_entry.pack()
 
         # command frame
