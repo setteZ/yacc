@@ -90,8 +90,7 @@ class App(tk.Frame):
         interface_frame.grid(column=0, row=1)
         interface_list = ["peak", "kvaser", "ixxat"]
         self.interface_variable = tk.StringVar(interface_frame)
-        INTERFACE = interface_list[0]
-        self.interface_variable.set(INTERFACE)
+        self.interface_variable.set(interface_list[0])
         interface_opt = tk.OptionMenu(
             interface_frame, self.interface_variable, *interface_list
         )
