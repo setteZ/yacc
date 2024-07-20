@@ -100,6 +100,7 @@ class Device:
         """
         read entry method
         """
+        logging.info("index = %d, subindex = %d", index, subindex)
         data = Data()
         try:
             data.bytes = self.__node.sdo.upload(index=index, subindex=subindex)
