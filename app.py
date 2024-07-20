@@ -168,6 +168,7 @@ class App(tk.Frame):
             idx = self.device.idx_from_name(self.variable_grp.get())
             self.idx_text.set(idx)
             self.variable_ele.set("")
+            self.sub_text.set("")
 
     def __entry_typing(self, *args):
         """
