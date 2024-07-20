@@ -24,16 +24,19 @@ class MainApplication(tk.Frame):
         self.file_str_entry = None
         self.variable_node = None
 
-        self.__populate_window()
+        self.__populate_parent()
+        self.parent.withdraw()
+        self.config_window = tk.Tk()
+        self.__create_config_window()
 
-    def __callback_itf(self):
+    def __callback_itf(self, *args):
         """
         callback for interface selection
         """
         interface = self.interface_variable.get()
         logging.info(interface)
 
-    def __callback_br(self):
+    def __callback_br(self, *args):
         """
         callback for baudrate selection
         """
@@ -46,21 +49,22 @@ class MainApplication(tk.Frame):
         filename = fd.askopenfilename(
             title="Open a file", initialdir=os.getcwd(), filetypes=filetypes
         )
+        logging.info("selected file: %s", filename)
         self.file_str_entry.set(filename)
 
-    def __populate_window(self):
+    def __create_config_window(self):
         """
         function to create the config window
         """
 
-        self.parent.title("Hello")
-        self.parent.resizable(False, False)
-        self.parent.configure(background="white")
+        self.config_window.title("configuration")
+        self.config_window.resizable(False, False)
+        self.config_window.configure(background="white")
 
-        file_frame = tk.LabelFrame(self.parent, text="file")
+        file_frame = tk.LabelFrame(self.config_window, text="file")
         file_frame.grid(column=0, row=0)
 
-        self.file_str_entry = tk.StringVar()
+        self.file_str_entry = tk.StringVar(file_frame)
         file_entry = tk.Entry(file_frame, textvariable=self.file_str_entry)
         file_entry.grid(column=0, row=0)
         file_button = tk.Button(
@@ -68,7 +72,7 @@ class MainApplication(tk.Frame):
         )
         file_button.grid(column=1, row=0)
 
-        interface_frame = tk.LabelFrame(self.parent, text="interface")
+        interface_frame = tk.LabelFrame(self.config_window, text="interface")
         interface_frame.grid(column=0, row=1)
         interface_list = ["peak", "kvaser", "ixxat"]
         self.interface_variable = tk.StringVar(interface_frame)
@@ -82,7 +86,7 @@ class MainApplication(tk.Frame):
 
         self.interface_variable.trace("w", self.__callback_itf)
 
-        baudrate_frame = tk.LabelFrame(self.parent, text="baudrate")
+        baudrate_frame = tk.LabelFrame(self.config_window, text="baudrate")
         baudrate_frame.grid(column=0, row=2)
         baudrate_list = ["125", "250", "500"]
         self.variable_br = tk.StringVar(baudrate_frame)
@@ -93,36 +97,38 @@ class MainApplication(tk.Frame):
 
         self.variable_br.trace("w", self.__callback_br)
 
-        nodeid_frame = tk.LabelFrame(self.parent, text="node id")
+        nodeid_frame = tk.LabelFrame(self.config_window, text="node id")
         nodeid_frame.grid(column=0, row=3)
-        self.variable_node = tk.StringVar()
+        self.variable_node = tk.StringVar(nodeid_frame)
         nodeid_entry = tk.Entry(nodeid_frame, textvariable=self.variable_node)
         nodeid_entry.pack()
 
-        button_frame = tk.Frame(self.parent)
+        button_frame = tk.Frame(self.config_window)
         button_frame.grid(column=0, row=4)
-        connect_button = tk.Button(
-            button_frame, text="connect", command=self.create_new_window
-        )
-        exit_button = tk.Button(button_frame, text="exit", command=self.parent.destroy)
+        connect_button = tk.Button(button_frame, text="connect", command=self.__connect)
+        exit_button = tk.Button(button_frame, text="exit", command=self.__exit)
         connect_button.grid(column=0, row=0)
         exit_button.grid(column=1, row=0)
 
-    def __callback_ele(self):
+    def __exit(self):
+        self.config_window.destroy()
+        self.parent.destroy()
+
+    def __callback_ele(self, *args):
         """
         callback for element selection
         """
         element = self.variable_ele.get()
         self.idx_text.set(element)
 
-    def __callback_grp(self):
+    def __callback_grp(self, *args):
         """
         callback for group selection
         """
         group = self.variable_grp.get()
         self.sub_text.set(group)
 
-    def __entry_typing(self):
+    def __entry_typing(self, *args):
         """
         entry_typing reaction
         """
@@ -134,11 +140,11 @@ class MainApplication(tk.Frame):
     def __write_action(self):
         logging.info("write action")
 
-    def create_new_window(self):
+    def __connect(self):
         """
         new window creation after "connect" button is clicked
         """
-        self.parent.destroy()
+        self.config_window.destroy()
 
         # TODO pass the config params to create the connection to the CAN device
 
@@ -150,10 +156,15 @@ class MainApplication(tk.Frame):
             self.file_str_entry.get(),
         )
 
-        new_window = tk.Tk()
+        self.parent.deiconify()
+
+    def __populate_parent(self):
+        """
+        function to populate the main app window
+        """
 
         # entry frame
-        entry_frame = tk.Frame(new_window)
+        entry_frame = tk.Frame(self.parent)
         entry_frame.grid(column=0, row=0)
         ## element
         element_frame = tk.LabelFrame(entry_frame, text="element")
@@ -196,7 +207,7 @@ class MainApplication(tk.Frame):
         sub_entry.pack()
 
         # command frame
-        command_frame = tk.Frame(new_window)
+        command_frame = tk.Frame(self.parent)
         command_frame.grid(column=1, row=0)
 
         ## read
@@ -212,7 +223,7 @@ class MainApplication(tk.Frame):
         write_button.grid(column=0, row=1)
 
         # data frame
-        data_frame = tk.Frame(new_window)
+        data_frame = tk.Frame(self.parent)
         data_frame.grid(column=2, row=0)
 
         ## length
@@ -253,13 +264,13 @@ class MainApplication(tk.Frame):
 
         # main button frame
 
-        new_button_frame = tk.Frame(new_window)
+        new_button_frame = tk.Frame(self.parent)
         new_button_frame.grid(column=0, row=4)
         new_connect_button = tk.Button(
-            new_button_frame, text="disconnect", command=new_window.destroy
+            new_button_frame, text="disconnect", command=self.parent.destroy
         )
         new_exit_button = tk.Button(
-            new_button_frame, text="exit", command=new_window.destroy
+            new_button_frame, text="exit", command=self.parent.destroy
         )
         new_connect_button.grid(column=0, row=0)
         new_exit_button.grid(column=1, row=0)
