@@ -8,6 +8,8 @@ import os
 import tkinter as tk
 from tkinter import filedialog as fd
 
+VERSION = "0.1b"
+
 
 class MainApplication(tk.Frame):
     """
@@ -16,6 +18,7 @@ class MainApplication(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
+        self.__version = VERSION
         self.parent = parent
         self.variable_ele = None
         self.variable_grp = None
@@ -163,10 +166,24 @@ class MainApplication(tk.Frame):
 
         self.parent.deiconify()
 
+    def __info(self):
+        tk.messagebox.showinfo("info", f"version {self.__version}")
+
     def __populate_parent(self):
         """
         function to populate the main app window
         """
+
+        # menu bar
+        menubar = tk.Menu(self.parent)
+        self.parent.config(menu=menubar)
+        help_menu = tk.Menu(menubar)
+
+        help_menu.add_command(
+            label="About",
+            command=self.__info,
+        )
+        menubar.add_cascade(label="Help", menu=help_menu, underline=0)
 
         # entry frame
         entry_frame = tk.Frame(self.parent)
