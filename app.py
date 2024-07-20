@@ -17,7 +17,7 @@ if ALPHA != "" and BETA != "":
     sys.exit(1)
 
 
-class MainApplication(tk.Frame):
+class App(tk.Frame):
     """
     window creation for CAN configuration
     """
@@ -318,5 +318,5 @@ class MainApplication(tk.Frame):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     window = tk.Tk()
-    MainApplication(window)
+    App(window)
     window.mainloop()

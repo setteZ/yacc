@@ -7,7 +7,7 @@ import logging
 import tkinter as tk
 
 # local module
-from app import MainApplication
+from app import App
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -21,5 +21,5 @@ if __name__ == "__main__":
         logging.basicConfig(level=logging.DEBUG)
 
     window = tk.Tk()
-    MainApplication(window)
+    App(window)
     window.mainloop()
