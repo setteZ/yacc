@@ -57,6 +57,15 @@ class Device:
         """
         connecting function
         """
+        try:
+            network = canopen.Network()
+            network.connect(
+                channel=self.__channel,
+                interface=self.__interface,
+                bitrate=self.__baudrate * 1000,
+            )
+        except CanError as err:
+            logging.debug(err)
 
     def read_entry(self):
         """
@@ -71,3 +80,5 @@ class Device:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
+    device = Device()
+    device.connect()
