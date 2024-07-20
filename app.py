@@ -39,6 +39,7 @@ class App(tk.Frame):
         self.sub_text = None
         self.file_str_entry = None
         self.variable_node = None
+        self.device = None
 
         self.parent.title("")
         self.parent.resizable(False, False)
@@ -165,7 +166,7 @@ class App(tk.Frame):
         new window creation after "connect" button is clicked
         """
         try:
-            device = Device(
+            self.device = Device(
                 self.file_str_entry.get(),
                 int(self.variable_br.get()),
                 int(self.variable_node.get()),
@@ -176,7 +177,7 @@ class App(tk.Frame):
             tk.messagebox.showerror("", "there something wrong with the configuration")
         else:
             try:
-                device.connect()
+                self.device.connect()
             except Exception as err:
                 logging.debug(err)
                 tk.messagebox.showerror("", "I can't connect to the device")
