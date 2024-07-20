@@ -7,7 +7,7 @@ import os
 import tkinter as tk
 from tkinter import filedialog as fd
 
-APP_VERSION = "0.1.0"
+VERSION = "0.1.0"
 ALPHA = ""
 BETA = ""
 
@@ -24,7 +24,7 @@ class App(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.__version = APP_VERSION
+        self.__version = VERSION
         if ALPHA != "":
             self.__version += "-alpha." + ALPHA
         if BETA != "":
