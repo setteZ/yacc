@@ -84,6 +84,7 @@ class Device:
             )
         except Exception as err:
             logging.debug(err)
+            raise err
         else:
             self.__node = self.__network.add_node(
                 node=self.__nodeid, object_dictionary=self.__filename
@@ -120,6 +121,12 @@ class Device:
         """
         write entry method
         """
+
+    def get_group_name_list(self):
+        """
+        get the list of the index name of the object dictionary
+        """
+        return self.__node.object_dictionary.keys()
 
 
 if __name__ == "__main__":
