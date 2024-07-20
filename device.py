@@ -46,6 +46,8 @@ class Device:
         else:
             self.__interface = interface
             self.__channel = 0
+        self.__network = None
+        self.__node = None
 
     def get_version(self):
         """
@@ -58,14 +60,19 @@ class Device:
         connecting function
         """
         try:
-            network = canopen.Network()
-            network.connect(
+            self.__network = canopen.Network()
+            self.__network.connect(
                 channel=self.__channel,
                 interface=self.__interface,
                 bitrate=self.__baudrate * 1000,
             )
-        except CanError as err:
+        except Exception as err:
             logging.debug(err)
+        else:
+            self.__node = self.__network.add_node(
+                node=self.__nodeid, object_dictionary=self.__filename
+            )
+            self.__node.sdo.RESPONSE_TIMEOUT = 1
 
     def read_entry(self):
         """
