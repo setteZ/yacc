@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import filedialog as fd
 
 VERSION = "0.1.0"
-ALPHA = ""
+ALPHA = "1"
 BETA = ""
 
 if ALPHA != "" and BETA != "":
