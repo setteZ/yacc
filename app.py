@@ -153,8 +153,20 @@ class App(tk.Frame):
         callback for group selection
         """
         group = self.variable_grp.get()
+        sub = self.device.get_subidx_names(group)
+        logging.info(sub)
+        menu = self.element_opt["menu"]
+        menu.delete(0, "end")
+        for string in sub:
+            menu.add_command(
+                label=string,
+                command=lambda value=string: self.variable_ele.set(value),
+            )
+            self.element_opt.option_clear()
+
         if group != "":
-            self.sub_text.set(group)
+            idx = self.device.idx_from_name(self.variable_grp.get())
+            self.sub_text.set(idx)
             self.variable_ele.set("")
 
     def __entry_typing(self, *args):

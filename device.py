@@ -135,6 +135,23 @@ class Device:
             names.append(obj.name)
         return names
 
+    def get_subidx_names(self, idx_name: str):
+        """
+        get the list of the subindex name of the object dictionary
+        """
+        names = []
+        obj = self.__node.object_dictionary[idx_name]
+        if isinstance(obj, canopen.objectdictionary.ODRecord):
+            for subobj in obj.values():
+                names.append(subobj.name)
+        return names
+
+    def idx_from_name(self, name: str) -> str:
+        """
+        get index from name reference
+        """
+        obj = self.__node.object_dictionary[name]
+        return f'{obj.index:X}'
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
