@@ -88,11 +88,10 @@ class Device:
         except Exception as err:
             logging.debug(err)
             raise err
-        else:
-            self.__node = self.__network.add_node(
-                node=self.__nodeid, object_dictionary=self.__filename
-            )
-            self.__node.sdo.RESPONSE_TIMEOUT = 1
+        self.__node = self.__network.add_node(
+            node=self.__nodeid, object_dictionary=self.__filename
+        )
+        self.__node.sdo.RESPONSE_TIMEOUT = 1
 
     def disconnect(self):
         """
@@ -111,15 +110,14 @@ class Device:
         except Exception as err:
             logging.debug(err)
             raise err
-        else:
-            data.length = len(data.bytes)
-            ba = bytearray(data.bytes)
-            ba.reverse()
-            data.hex = "".join(f"{x:02X}" for x in ba)
-            data.signed = int.from_bytes(bytes=data.bytes, byteorder="little")
-            if data.length == 4:
-                data.float = struct.unpack("!f", ba)[0]
-            return data
+        data.length = len(data.bytes)
+        ba = bytearray(data.bytes)
+        ba.reverse()
+        data.hex = "".join(f"{x:02X}" for x in ba)
+        data.signed = int.from_bytes(bytes=data.bytes, byteorder="little")
+        if data.length == 4:
+            data.float = struct.unpack("!f", ba)[0]
+        return data
 
     def write_entry(self):
         """
