@@ -99,6 +99,14 @@ class App(tk.Frame):
         file_frame.grid(column=0, row=0)
 
         self.file_str_entry = tk.StringVar(file_frame)
+
+        eds_file = []
+        current_dir = os.getcwd()
+        for x in os.listdir(current_dir):
+            if x.endswith(".eds"):
+                eds_file.append(x)
+        if len(eds_file) == 1:
+            self.file_str_entry.set(os.path.join(current_dir,eds_file[0]))
         file_entry = tk.Entry(file_frame, textvariable=self.file_str_entry)
         file_entry.grid(column=0, row=0)
         file_button = tk.Button(
