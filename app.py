@@ -7,6 +7,9 @@ import os
 import tkinter as tk
 from tkinter import filedialog as fd
 
+# requirements
+from canopen.objectdictionary import datatypes
+
 # local module
 from device import Device
 
@@ -48,6 +51,10 @@ class App(tk.Frame):
         self.length_text = None
         self.element_opt = None
         self.group_opt = None
+        self.value_unsigned_entry = None
+        self.value_signed_entry = None
+        self.value_float_entry = None
+        self.value_hex_entry = None
 
         self.parent.title("")
         self.parent.resizable(False, False)
@@ -194,6 +201,28 @@ class App(tk.Frame):
             else:
                 self.value_float_text.set("-")
             self.length_text.set(str(data.length))
+            data_type = self.device.get_datatype(self.variable_grp.get(), self.variable_ele.get())
+            if data_type in datatypes.UNSIGNED_TYPES:
+                self.value_unsigned_entry.config(fg="black")
+                self.value_signed_entry.config(fg="grey")
+                self.value_float_entry.config(fg="grey")
+                self.value_hex_entry.config(fg="grey")
+            elif data_type in datatypes.SIGNED_TYPES:
+                self.value_unsigned_entry.config(fg="grey")
+                self.value_signed_entry.config(fg="black")
+                self.value_float_entry.config(fg="grey")
+                self.value_hex_entry.config(fg="grey")
+            elif data_type in datatypes.FLOAT_TYPES:
+                self.value_unsigned_entry.config(fg="grey")
+                self.value_signed_entry.config(fg="grey")
+                self.value_float_entry.config(fg="black")
+                self.value_hex_entry.config(fg="grey")
+            else:
+                logging.info(data_type)
+                self.value_unsigned_entry.config(fg="grey")
+                self.value_signed_entry.config(fg="grey")
+                self.value_float_entry.config(fg="grey")
+                self.value_hex_entry.config(fg="black")
 
     def __write_action(self):
         logging.info("write action")
@@ -347,28 +376,28 @@ class App(tk.Frame):
         value_unsigned_label = tk.Label(value_frame, text="unsigned")
         value_unsigned_label.grid(column=0, row=0)
         self.value_unsigned_text = tk.StringVar()
-        value_unsigned_entry = tk.Entry(
+        self.value_unsigned_entry = tk.Entry(
             value_frame, textvariable=self.value_unsigned_text
         )
-        value_unsigned_entry.grid(column=1, row=0)
+        self.value_unsigned_entry.grid(column=1, row=0)
 
         value_signed_label = tk.Label(value_frame, text="signed")
         value_signed_label.grid(column=0, row=1)
         self.value_signed_text = tk.StringVar()
-        value_signed_entry = tk.Entry(value_frame, textvariable=self.value_signed_text)
-        value_signed_entry.grid(column=1, row=1)
-
-        value_hex_label = tk.Label(value_frame, text="hex")
-        value_hex_label.grid(column=0, row=2)
-        self.value_hex_text = tk.StringVar()
-        value_hex_entry = tk.Entry(value_frame, textvariable=self.value_hex_text)
-        value_hex_entry.grid(column=1, row=2)
+        self.value_signed_entry = tk.Entry(value_frame, textvariable=self.value_signed_text)
+        self.value_signed_entry.grid(column=1, row=1)
 
         value_float_label = tk.Label(value_frame, text="float")
-        value_float_label.grid(column=0, row=3)
+        value_float_label.grid(column=0, row=2)
         self.value_float_text = tk.StringVar()
-        value_float_entry = tk.Entry(value_frame, textvariable=self.value_float_text)
-        value_float_entry.grid(column=1, row=3)
+        self.value_float_entry = tk.Entry(value_frame, textvariable=self.value_float_text)
+        self.value_float_entry.grid(column=1, row=2)
+
+        value_hex_label = tk.Label(value_frame, text="hex")
+        value_hex_label.grid(column=0, row=3)
+        self.value_hex_text = tk.StringVar()
+        self.value_hex_entry = tk.Entry(value_frame, textvariable=self.value_hex_text)
+        self.value_hex_entry.grid(column=1, row=3)
 
         # main button frame
 

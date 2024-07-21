@@ -156,8 +156,18 @@ class Device:
         return f'{obj.index:X}'
 
     def get_sub(self, group_name: str, entry_name:str)->str:
+        """
+        get the subindex of an entry given the name
+        """
         obj = self.__node.object_dictionary[group_name][entry_name]
         return f'{obj.subindex:X}'
+
+    def get_datatype(self, group_name: str, entry_name:str)->str:
+        """
+        get the datatype of an entry given the name
+        """
+        obj = self.__node.object_dictionary[group_name][entry_name]
+        return obj.data_type
 
 
 if __name__ == "__main__":
