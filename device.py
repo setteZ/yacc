@@ -114,7 +114,7 @@ class Device:
         ba = bytearray(data.bytes)
         ba.reverse()
         data.hex = "".join(f"{x:02X}" for x in ba)
-        data.signed = int.from_bytes(bytes=data.bytes, byteorder="little")
+        data.unsigned = int.from_bytes(bytes=data.bytes, byteorder="little")
         if data.length == 4:
             data.float = struct.unpack("!f", ba)[0]
         return data
