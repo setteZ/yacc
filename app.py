@@ -6,6 +6,17 @@ import logging
 import os
 import tkinter as tk
 from tkinter import filedialog as fd
+try:
+    import tomllib
+except ImportError:
+    try:
+        import tomli as tomllib
+    except ImportError:
+        import sys
+
+        print("error: missing both tomllib and tomli module")
+        sys.exit(1)
+
 
 # requirements
 from canopen.objectdictionary import datatypes
@@ -105,6 +116,26 @@ class App(tk.Frame):
         for x in os.listdir(current_dir):
             if x.endswith(".eds"):
                 eds_file.append(x)
+        itf = "peak"
+        baud = "250"
+        nid = "1"
+        toml_path = os.path.join(os.getcwd(), "config.toml")
+        logging.info(toml_path)
+        if os.path.exists(toml_path):
+            with open(toml_path, "rb") as f:
+                try:
+                    toml_dict = tomllib.load(f)
+                except tomllib.TOMLDecodeError:
+                    logging.info("not a valid TOML file")
+                else:
+                    eds_file = [toml_dict["file"]["filename"]]
+                    itf = toml_dict["can"]["interface"]
+                    baud = str(toml_dict["can"]["baudrate"])
+                    nid = str(toml_dict["can"]["nodeid"])
+                    logging.info("%s | %s | %s | %s", eds_file, itf, baud, nid)
+        else:
+            logging.info("missing config.toml file")
+
         if len(eds_file) == 1:
             self.file_str_entry.set(os.path.join(current_dir,eds_file[0]))
         file_entry = tk.Entry(file_frame, textvariable=self.file_str_entry)
@@ -118,7 +149,7 @@ class App(tk.Frame):
         interface_frame.grid(column=0, row=1)
         interface_list = ["peak", "kvaser", "ixxat"]
         self.interface_variable = tk.StringVar(interface_frame)
-        self.interface_variable.set(interface_list[0])
+        self.interface_variable.set(itf)
         interface_opt = tk.OptionMenu(
             interface_frame, self.interface_variable, *interface_list
         )
@@ -130,7 +161,7 @@ class App(tk.Frame):
         baudrate_frame.grid(column=0, row=2)
         baudrate_list = ["125", "250", "500"]
         self.variable_br = tk.StringVar(baudrate_frame)
-        self.variable_br.set(baudrate_list[1])
+        self.variable_br.set(baud)
         baudrate_opt = tk.OptionMenu(baudrate_frame, self.variable_br, *baudrate_list)
         baudrate_opt.pack()
 
@@ -138,7 +169,7 @@ class App(tk.Frame):
 
         nodeid_frame = tk.LabelFrame(self.config_window, text="node id")
         nodeid_frame.grid(column=0, row=3)
-        self.variable_node = tk.StringVar(nodeid_frame, value="1")
+        self.variable_node = tk.StringVar(nodeid_frame, value=nid)
         nodeid_entry = tk.Entry(nodeid_frame, textvariable=self.variable_node)
         nodeid_entry.pack()
 
