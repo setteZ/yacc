@@ -503,6 +503,10 @@ class App(tk.Frame):
                 self.value_hex_text.set(data_hex)
                 self.value_signed_text.set("-")
                 self.value_float_text.set("-")
+        self.value_unsigned_entry.config(fg="black")
+        self.value_signed_entry.config(fg="black")
+        self.value_float_entry.config(fg="black")
+        self.value_hex_entry.config(fg="black")
 
     def __signed_typing(self, *args):
         """
@@ -513,6 +517,10 @@ class App(tk.Frame):
         self.value_signed_text.set("-")
         self.value_float_text.set("-")
         self.value_hex_text.set("-")
+        self.value_unsigned_entry.config(fg="black")
+        self.value_signed_entry.config(fg="black")
+        self.value_float_entry.config(fg="black")
+        self.value_hex_entry.config(fg="black")
         tk.messagebox.showinfo("data", "signed conversion not yet implemented")
 
     def __float_typing(self, *args):
@@ -530,6 +538,11 @@ class App(tk.Frame):
             self.value_hex_text.set(data_bytes.hex())
             self.value_unsigned_text.set("-")
             self.value_signed_text.set("-")
+            self.length_text.set(4)
+        self.value_unsigned_entry.config(fg="black")
+        self.value_signed_entry.config(fg="black")
+        self.value_float_entry.config(fg="black")
+        self.value_hex_entry.config(fg="black")
 
 
     def __hex_typing(self, *args):
@@ -547,6 +560,10 @@ class App(tk.Frame):
         if data_length == 4:
             self.value_float_text.set(struct.unpack("<f", ba)[0])
         self.length_text.set(str(data_length))
+        self.value_unsigned_entry.config(fg="black")
+        self.value_signed_entry.config(fg="black")
+        self.value_float_entry.config(fg="black")
+        self.value_hex_entry.config(fg="black")
 
 
 if __name__ == "__main__":
