@@ -1,4 +1,5 @@
 __pycache__
 .venv
 *.eds
+*.dcf
 config.toml

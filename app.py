@@ -341,6 +341,21 @@ class App(tk.Frame):
         message = f"app version: {self.__version}\ndevice version: {self.device.get_version()}"
         tk.messagebox.showinfo("info", message)
 
+    def __download_dcf(self):
+
+        filetypes = (("dcf files", "*.dcf"),
+        ('All files', '*.*'))
+
+        filename = fd.askopenfilename(
+            title="Select .dcf file", initialdir=os.getcwd(), filetypes=filetypes
+        )
+        try:
+            self.device.download_dcf(filename)
+        except Exception as err:
+            tk.messagebox.showerror("dcf download", err)
+        else:
+            tk.messagebox.showinfo("dcf download", "done")
+
     def __populate_parent(self):
         """
         function to populate the main app window
@@ -349,6 +364,14 @@ class App(tk.Frame):
         # menu bar
         menubar = tk.Menu(self.parent)
         self.parent.config(menu=menubar)
+        dcf_menu = tk.Menu(menubar)
+
+        dcf_menu.add_command(
+            label="Download",
+            command=self.__download_dcf,
+        )
+        menubar.add_cascade(label="dcf", menu=dcf_menu, underline=0)
+
         help_menu = tk.Menu(menubar)
 
         help_menu.add_command(
