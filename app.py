@@ -6,6 +6,8 @@ import logging
 import os
 import tkinter as tk
 from tkinter import filedialog as fd
+import struct
+
 try:
     import tomllib
 except ImportError:
@@ -439,24 +441,28 @@ class App(tk.Frame):
             value_frame, textvariable=self.value_unsigned_text
         )
         self.value_unsigned_entry.grid(column=1, row=0)
+        self.value_unsigned_entry.bind("<Return>", self.__unsigned_typing)
 
         value_signed_label = tk.Label(value_frame, text="signed")
         value_signed_label.grid(column=0, row=1)
         self.value_signed_text = tk.StringVar()
         self.value_signed_entry = tk.Entry(value_frame, textvariable=self.value_signed_text)
         self.value_signed_entry.grid(column=1, row=1)
+        self.value_signed_entry.bind("<Return>", self.__signed_typing)
 
         value_float_label = tk.Label(value_frame, text="float")
         value_float_label.grid(column=0, row=2)
         self.value_float_text = tk.StringVar()
         self.value_float_entry = tk.Entry(value_frame, textvariable=self.value_float_text)
         self.value_float_entry.grid(column=1, row=2)
+        self.value_float_entry.bind("<Return>", self.__float_typing)
 
         value_hex_label = tk.Label(value_frame, text="hex")
         value_hex_label.grid(column=0, row=3)
         self.value_hex_text = tk.StringVar()
         self.value_hex_entry = tk.Entry(value_frame, textvariable=self.value_hex_text)
         self.value_hex_entry.grid(column=1, row=3)
+        self.value_hex_entry.bind("<Return>", self.__hex_typing)
 
         # main button frame
 
@@ -475,6 +481,72 @@ class App(tk.Frame):
         self.device.disconnect()
         self.parent.withdraw()
         self.config_window.deiconify()
+
+    def __unsigned_typing(self, *args):
+        """
+        function to convert from unsigned
+        """
+        logging.info("unsigned entered")
+        try:
+            data_length = int(self.length_text.get())
+        except Exception as err:
+            logging.debug(err)
+            tk.messagebox.showerror("data", "wrong lenght")
+        else:
+            try:
+                data_unsigned = int(self.value_unsigned_entry.get(), 10)
+            except Exception as err:
+                logging.debug(err)
+                tk.messagebox.showerror("data", "wrong unsigned value")
+            else:
+                data_hex = f"{data_unsigned:0{data_length*2}x}"
+                self.value_hex_text.set(data_hex)
+                self.value_signed_text.set("-")
+                self.value_float_text.set("-")
+
+    def __signed_typing(self, *args):
+        """
+        function to convert from signed
+        """
+        logging.info("signed entered")
+        self.value_unsigned_text.set("-")
+        self.value_signed_text.set("-")
+        self.value_float_text.set("-")
+        self.value_hex_text.set("-")
+        tk.messagebox.showinfo("data", "signed conversion not yet implemented")
+
+    def __float_typing(self, *args):
+        """
+        function to convert from float
+        """
+        logging.info("float entered")
+        try:
+            data_float = float(self.value_float_text.get())
+        except Exception as err:
+            logging.debug(err)
+            tk.messagebox.showerror("data", "wrong float")
+        else:
+            data_bytes = struct.pack(">f", data_float)
+            self.value_hex_text.set(data_bytes.hex())
+            self.value_unsigned_text.set("-")
+            self.value_signed_text.set("-")
+
+
+    def __hex_typing(self, *args):
+        """
+        function to convert from hex
+        """
+        logging.info("hex entered")
+        data_bytes=bytes.fromhex(self.value_hex_text.get())
+        data_length = len(data_bytes)
+        ba = bytearray(data_bytes)
+        "a".encode()
+        ba.reverse()
+        data_unsigned = int.from_bytes(bytes=data_bytes, byteorder="little")
+        self.value_unsigned_text.set(data_unsigned)
+        if data_length == 4:
+            self.value_float_text.set(struct.unpack("<f", ba)[0])
+        self.length_text.set(str(data_length))
 
 
 if __name__ == "__main__":
