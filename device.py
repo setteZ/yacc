@@ -119,10 +119,14 @@ class Device:
             data.float = struct.unpack("!f", ba)[0]
         return data
 
-    def write_entry(self):
+    def write_entry(self, index: int, subindex: int, data: bytes):
         """
         write entry method
         """
+        try:
+            self.__node.sdo.download(index, subindex, data)
+        except Exception as err:
+            raise err
 
     def get_group_name_list(self):
         """

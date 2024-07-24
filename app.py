@@ -272,6 +272,20 @@ class App(tk.Frame):
 
     def __write_action(self):
         logging.info("write action")
+        try:
+            self.device.write_entry(
+                    index=int(self.idx_text.get(), 16),
+                    subindex=int(self.sub_text.get(), 16),
+                    data=bytes.fromhex(self.value_hex_text.get())
+            )
+        except Exception as err:
+            logging.debug(err)
+            tk.messagebox.showerror("write", "error while writing")
+        else:
+            self.value_unsigned_text.set("")
+            self.value_signed_text.set("")
+            self.value_float_text.set("")
+            self.value_hex_text.set("")
 
     def __connect(self):
         """
@@ -401,7 +415,6 @@ class App(tk.Frame):
             command_frame, text="write", command=self.__write_action
         )
         write_button.grid(column=0, row=1)
-        write_button.grid_forget()
 
         # data frame
         data_frame = tk.Frame(self.parent)
