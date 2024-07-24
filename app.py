@@ -550,7 +550,11 @@ class App(tk.Frame):
         function to convert from hex
         """
         logging.info("hex entered")
-        data_bytes=bytes.fromhex(self.value_hex_text.get())
+        data_hex = self.value_hex_text.get()
+        if len(data_hex) % 2:
+            data_hex = f"0{data_hex}"
+            self.value_hex_text.set(data_hex)
+        data_bytes=bytes.fromhex(data_hex)
         data_length = len(data_bytes)
         ba = bytearray(data_bytes)
         "a".encode()
