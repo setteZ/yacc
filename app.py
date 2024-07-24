@@ -139,7 +139,7 @@ class App(tk.Frame):
             logging.info("missing config.toml file")
 
         if len(eds_file) == 1:
-            self.file_str_entry.set(os.path.join(current_dir,eds_file[0]))
+            self.file_str_entry.set(os.path.join(current_dir, eds_file[0]))
         file_entry = tk.Entry(file_frame, textvariable=self.file_str_entry)
         file_entry.grid(column=0, row=0)
         file_button = tk.Button(
@@ -249,7 +249,9 @@ class App(tk.Frame):
             else:
                 self.value_float_text.set("-")
             self.length_text.set(str(data.length))
-            data_type = self.device.get_datatype(self.variable_grp.get(), self.variable_ele.get())
+            data_type = self.device.get_datatype(
+                self.variable_grp.get(), self.variable_ele.get()
+            )
             if data_type in datatypes.UNSIGNED_TYPES:
                 self.value_unsigned_entry.config(fg="black")
                 self.value_signed_entry.config(fg="grey")
@@ -276,9 +278,9 @@ class App(tk.Frame):
         logging.info("write action")
         try:
             self.device.write_entry(
-                    index=int(self.idx_text.get(), 16),
-                    subindex=int(self.sub_text.get(), 16),
-                    data=bytes.fromhex(self.value_hex_text.get())
+                index=int(self.idx_text.get(), 16),
+                subindex=int(self.sub_text.get(), 16),
+                data=bytes.fromhex(self.value_hex_text.get()),
             )
         except Exception as err:
             logging.debug(err)
@@ -343,8 +345,7 @@ class App(tk.Frame):
 
     def __download_dcf(self):
 
-        filetypes = (("dcf files", "*.dcf"),
-        ('All files', '*.*'))
+        filetypes = (("dcf files", "*.dcf"), ("All files", "*.*"))
 
         filename = fd.askopenfilename(
             title="Select .dcf file", initialdir=os.getcwd(), filetypes=filetypes
@@ -469,14 +470,18 @@ class App(tk.Frame):
         value_signed_label = tk.Label(value_frame, text="signed")
         value_signed_label.grid(column=0, row=1)
         self.value_signed_text = tk.StringVar()
-        self.value_signed_entry = tk.Entry(value_frame, textvariable=self.value_signed_text)
+        self.value_signed_entry = tk.Entry(
+            value_frame, textvariable=self.value_signed_text
+        )
         self.value_signed_entry.grid(column=1, row=1)
         self.value_signed_entry.bind("<Return>", self.__signed_typing)
 
         value_float_label = tk.Label(value_frame, text="float")
         value_float_label.grid(column=0, row=2)
         self.value_float_text = tk.StringVar()
-        self.value_float_entry = tk.Entry(value_frame, textvariable=self.value_float_text)
+        self.value_float_entry = tk.Entry(
+            value_frame, textvariable=self.value_float_text
+        )
         self.value_float_entry.grid(column=1, row=2)
         self.value_float_entry.bind("<Return>", self.__float_typing)
 
@@ -567,7 +572,6 @@ class App(tk.Frame):
         self.value_float_entry.config(fg="black")
         self.value_hex_entry.config(fg="black")
 
-
     def __hex_typing(self, *args):
         """
         function to convert from hex
@@ -577,7 +581,7 @@ class App(tk.Frame):
         if len(data_hex) % 2:
             data_hex = f"0{data_hex}"
             self.value_hex_text.set(data_hex)
-        data_bytes=bytes.fromhex(data_hex)
+        data_bytes = bytes.fromhex(data_hex)
         data_length = len(data_bytes)
         ba = bytearray(data_bytes)
         "a".encode()

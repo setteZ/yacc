@@ -155,22 +155,22 @@ class Device:
         get index from name reference
         """
         obj = self.__node.object_dictionary[name]
-        return f'{obj.index:X}'
+        return f"{obj.index:X}"
 
-    def get_sub(self, group_name: str, entry_name:str)->str:
+    def get_sub(self, group_name: str, entry_name: str) -> str:
         """
         get the subindex of an entry given the name
         """
         obj = self.__node.object_dictionary[group_name][entry_name]
-        return f'{obj.subindex:X}'
+        return f"{obj.subindex:X}"
 
-    def get_datatype(self, group_name: str, entry_name:str)->str:
+    def get_datatype(self, group_name: str, entry_name: str) -> str:
         """
         get the datatype of an entry given the name
         """
         obj = self.__node.object_dictionary[group_name][entry_name]
         return obj.data_type
-    
+
     def download_dcf(self, filename: str):
         """
         function to download a dcf file
@@ -186,7 +186,9 @@ class Device:
                         try:
                             raw = od[idx, subidx].encode_raw(value)
                         except Exception as err:
-                            raise Exception(f"problem with the value of 0x{idx:04X} 0x{subidx:04X}: {err}")
+                            raise Exception(
+                                f"problem with the value of 0x{idx:04X} 0x{subidx:04X}: {err}"
+                            )
                         else:
                             self.__node.sdo.download(idx, subidx, raw)
             if isinstance(obj, canopen.objectdictionary.ODVariable):
@@ -196,10 +198,13 @@ class Device:
                     try:
                         raw = od[idx].encode_raw(value)
                     except Exception as err:
-                        raise Exception(f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}")
+                        raise Exception(
+                            f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
+                        )
                     else:
                         self.__node.sdo.download(idx, subidx, raw)
         self.__node.sdo.download(0x1010, 0x01, b"save")
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
