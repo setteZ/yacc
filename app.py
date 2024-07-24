@@ -214,12 +214,19 @@ class App(tk.Frame):
             self.variable_ele.set("")
             self.sub_text.set("")
 
-    def __entry_typing(self, *args):
+    def __idx_typing(self, *args):
         """
-        entry_typing reaction
+        index typing reaction
         """
         logging.info("entry: idx %s sub %s", self.idx_text.get(), self.sub_text.get())
         self.variable_grp.set("")
+        self.variable_ele.set("")
+
+    def __sub_typing(self, *args):
+        """
+        subindex typing reaction
+        """
+        logging.info("entry: idx %s sub %s", self.idx_text.get(), self.sub_text.get())
         self.variable_ele.set("")
 
     def __read_action(self):
@@ -367,7 +374,7 @@ class App(tk.Frame):
         self.idx_text = tk.StringVar(idx_frame)
         idx_entry = tk.Entry(idx_frame, textvariable=self.idx_text)
 
-        idx_entry.bind("<Key>", self.__entry_typing)
+        idx_entry.bind("<Key>", self.__idx_typing)
         idx_entry.pack()
 
         ## sub
@@ -376,7 +383,7 @@ class App(tk.Frame):
         sub_frame.grid(column=1, row=1)
         sub_entry = tk.Entry(sub_frame, textvariable=self.sub_text)
 
-        sub_entry.bind("<Key>", self.__entry_typing)
+        sub_entry.bind("<Key>", self.__sub_typing)
         sub_entry.pack()
 
         # command frame
