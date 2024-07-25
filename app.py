@@ -215,12 +215,20 @@ class App(tk.Frame):
             self.variable_ele.set("")
             self.sub_text.set("")
 
+    def __idx_enter(self, *args):
+        """
+        index enter reaction
+        """
+        self.variable_grp.set(self.device.get_group_from_idx(int(self.idx_text.get(), 16)))
+    
     def __idx_typing(self, *args):
         """
         index typing reaction
         """
         logging.info("entry: idx %s sub %s", self.idx_text.get(), self.sub_text.get())
         self.variable_grp.set("")
+        menu = self.element_opt["menu"]
+        menu.delete(0, "end")
         self.variable_ele.set("")
 
     def __sub_typing(self, *args):
@@ -454,6 +462,7 @@ class App(tk.Frame):
         idx_entry = tk.Entry(idx_frame, textvariable=self.idx_text)
 
         idx_entry.bind("<Key>", self.__idx_typing)
+        idx_entry.bind("<Return>", self.__idx_enter)
         idx_entry.pack()
 
         ## sub

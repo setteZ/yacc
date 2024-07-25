@@ -128,6 +128,19 @@ class Device:
         except Exception as err:
             raise err
 
+    def get_group_from_idx(self, idx: int) -> str:
+        """
+        get the group name from the index ref
+        """
+        group = ""
+        try:
+            name = self.__node.object_dictionary[idx].name
+        except:
+            pass
+        else:
+            group = name
+        return group
+    
     def get_group_name_list(self):
         """
         get the list of the index name of the object dictionary
