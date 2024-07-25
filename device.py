@@ -211,7 +211,6 @@ class Device:
                         except Exception as err:
                             message = (f"problem writing 0x{idx:04X} 0x{subidx:02X} {obj.name}: {err}")
                             raise Exception(message)
-        self.__node.sdo.download(0x1010, 0x01, b"save")
 
     def upload_dcf(self):
         """

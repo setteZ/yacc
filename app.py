@@ -375,7 +375,10 @@ class App(tk.Frame):
         except Exception as err:
             tk.messagebox.showerror("dcf download", err)
         else:
-            tk.messagebox.showinfo("dcf download", "done")
+            answer = tk.messagebox.askquestion("dcf download", "done, do you wanna save?")
+            if answer == tk.messagebox.YES:
+                self.device.save()
+
 
     def __populate_parent(self):
         """
