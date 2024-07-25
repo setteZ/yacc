@@ -190,7 +190,11 @@ class Device:
                                 f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
                             )
                         else:
-                            self.__node.sdo.download(idx, subidx, raw)
+                            try:
+                                self.__node.sdo.download(idx, subidx, raw)
+                            except Exception as err:
+                                message = (f"problem writing 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}")
+                                raise Exception(message)
             if isinstance(obj, canopen.objectdictionary.ODVariable):
                 subidx = obj.subindex
                 if obj.access_type == "rw":
@@ -202,7 +206,11 @@ class Device:
                             f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
                         )
                     else:
-                        self.__node.sdo.download(idx, subidx, raw)
+                        try:
+                            self.__node.sdo.download(idx, subidx, raw)
+                        except Exception as err:
+                            message = (f"problem writing 0x{idx:04X} 0x{subidx:02X} {obj.name}: {err}")
+                            raise Exception(message)
         self.__node.sdo.download(0x1010, 0x01, b"save")
 
     def upload_dcf(self):
@@ -219,6 +227,7 @@ class Device:
                         raise Exception(f"problem with 0x{obj.index:04X} 0x{subobj.subindex:02X}: {err}")
                     value = self.__node.object_dictionary[obj.index][subobj.subindex].decode_raw(value)
                     # TODO manage value type conversion
+                    print(f"{subobj.name} = {value} ({type(value)})")
                     self.__node.object_dictionary[obj.index][subobj.subindex].value_raw = value
 
             if isinstance(obj, canopen.objectdictionary.ODVariable):
