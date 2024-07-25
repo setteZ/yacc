@@ -198,18 +198,18 @@ class App(tk.Frame):
         callback for group selection
         """
         group = self.variable_grp.get()
-        sub = self.device.get_subidx_names(group)
-        logging.info(sub)
-        menu = self.element_opt["menu"]
-        menu.delete(0, "end")
-        for string in sub:
-            menu.add_command(
-                label=string,
-                command=lambda value=string: self.variable_ele.set(value),
-            )
-            self.element_opt.option_clear()
-
         if group != "":
+            sub = self.device.get_subidx_names(group)
+            logging.info(sub)
+            menu = self.element_opt["menu"]
+            menu.delete(0, "end")
+            for string in sub:
+                menu.add_command(
+                    label=string,
+                    command=lambda value=string: self.variable_ele.set(value),
+                )
+                self.element_opt.option_clear()
+
             idx = self.device.idx_from_name(self.variable_grp.get())
             self.idx_text.set(idx)
             self.variable_ele.set("")
@@ -353,11 +353,17 @@ class App(tk.Frame):
         tk.messagebox.showinfo("info", message)
 
     def __upload_dcf(self):
+        wait_upload = tk.Tk()
+        wait_label = tk.Label(wait_upload, text="wait...")
+        wait_label.pack()
         try:
+            #wait_upload.withdraw()
             self.device.upload_dcf()
         except Exception as err:
+            #wait_upload.destroy()
             tk.messagebox.showerror("dcf upload", err)
         else:
+            #wait_upload.destroy()
             tk.messagebox.showinfo("dcf upload", "done")
 
 
