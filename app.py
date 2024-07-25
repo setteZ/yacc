@@ -179,9 +179,7 @@ class App(tk.Frame):
         button_frame = tk.Frame(self.config_window)
         button_frame.grid(column=0, row=4)
         connect_button = tk.Button(button_frame, text="connect", command=self.__connect)
-        exit_button = tk.Button(button_frame, text="exit", command=self.__exit)
         connect_button.grid(column=0, row=0)
-        exit_button.grid(column=1, row=0)
 
     def __exit(self):
         self.config_window.destroy()
@@ -388,8 +386,15 @@ class App(tk.Frame):
         # menu bar
         menubar = tk.Menu(self.parent)
         self.parent.config(menu=menubar)
-        config_menu = tk.Menu(menubar, tearoff=False)
+        file_menu = tk.Menu(menubar, tearoff=False)
 
+        file_menu.add_command(
+            label="Exit",
+            command=self.__exit,
+        )
+        menubar.add_cascade(label="File", menu=file_menu, underline=0)
+
+        config_menu = tk.Menu(menubar, tearoff=False)
         config_menu.add_command(
             label="Upload dcf",
             command=self.__upload_dcf,
@@ -535,9 +540,7 @@ class App(tk.Frame):
         new_connect_button = tk.Button(
             new_button_frame, text="disconnect", command=self.__disconnect
         )
-        new_exit_button = tk.Button(new_button_frame, text="exit", command=self.__exit)
         new_connect_button.grid(column=0, row=0)
-        new_exit_button.grid(column=1, row=0)
 
     def __disconnect(self):
         logging.info("disconnect reaction")
