@@ -182,12 +182,12 @@ class Device:
                 for subobj in obj.values():
                     subidx = subobj.subindex
                     if subobj.access_type == "rw":
-                        value = od[idx, subidx].value
+                        value = od[idx][subidx].value
                         try:
-                            raw = od[idx, subidx].encode_raw(value)
+                            raw = od[idx][subidx].encode_raw(value)
                         except Exception as err:
                             raise Exception(
-                                f"problem with the value of 0x{idx:04X} 0x{subidx:04X}: {err}"
+                                f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
                             )
                         else:
                             self.__node.sdo.download(idx, subidx, raw)
