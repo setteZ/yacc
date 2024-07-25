@@ -204,7 +204,33 @@ class Device:
                     else:
                         self.__node.sdo.download(idx, subidx, raw)
         self.__node.sdo.download(0x1010, 0x01, b"save")
-    
+
+    def upload_dcf(self):
+        """
+        function to upload a dcf file
+        """
+        for obj in self.__node.object_dictionary.values():
+            logging.debug("0x%X %s", obj.index, obj.name)
+            if isinstance(obj, canopen.objectdictionary.ODRecord):
+                for subobj in obj.values():
+                    try:
+                        value = self.__node.sdo.upload(obj.index, subobj.subindex)
+                    except Exception as err:
+                        raise Exception(f"problem with 0x{obj.index:04X} 0x{subobj.subindex:02X}: {err}")
+                    value = self.__node.object_dictionary[obj.index][subobj.subindex].decode_raw(value)
+                    # TODO manage value type conversion
+                    self.__node.object_dictionary[obj.index][subobj.subindex].value_raw = value
+
+            if isinstance(obj, canopen.objectdictionary.ODVariable):
+                try:
+                    value = self.__node.sdo.upload(obj.index, obj.subindex)
+                except Exception as err:
+                    raise Exception(f"problem with 0x{obj.index:04X} 0x{obj.subindex:02X}: {err}")
+                value = self.__node.object_dictionary[obj.index].decode_raw(value)
+                # TODO manage value type conversion
+                self.__node.object_dictionary[obj.index].value_raw = value
+        canopen.objectdictionary.export_od(self.__node.object_dictionary, "upload.dcf", "dcf")
+
     def save(self):
         """
         save request

@@ -354,6 +354,15 @@ class App(tk.Frame):
         message = f"app version: {self.__version}\ndevice version: {self.device.get_version()}"
         tk.messagebox.showinfo("info", message)
 
+    def __upload_dcf(self):
+        try:
+            self.device.upload_dcf()
+        except Exception as err:
+            tk.messagebox.showerror("dcf upload", err)
+        else:
+            tk.messagebox.showinfo("dcf upload", "done")
+
+
     def __download_dcf(self):
 
         filetypes = (("dcf files", "*.dcf"), ("All files", "*.*"))
@@ -377,6 +386,11 @@ class App(tk.Frame):
         menubar = tk.Menu(self.parent)
         self.parent.config(menu=menubar)
         dcf_menu = tk.Menu(menubar)
+
+        dcf_menu.add_command(
+            label="Upload",
+            command=self.__upload_dcf,
+        )
 
         dcf_menu.add_command(
             label="Download",
