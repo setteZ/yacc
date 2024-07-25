@@ -222,8 +222,10 @@ class App(tk.Frame):
         """
         index enter reaction
         """
-        self.variable_grp.set(self.device.get_group_from_idx(int(self.idx_text.get(), 16)))
-    
+        self.variable_grp.set(
+            self.device.get_group_from_idx(int(self.idx_text.get(), 16))
+        )
+
     def __idx_typing(self, *args):
         """
         index typing reaction
@@ -368,15 +370,14 @@ class App(tk.Frame):
         wait_label = tk.Label(wait_upload, text="wait...")
         wait_label.pack()
         try:
-            #wait_upload.withdraw()
+            # wait_upload.withdraw()
             self.device.upload_dcf()
         except Exception as err:
-            #wait_upload.destroy()
+            # wait_upload.destroy()
             tk.messagebox.showerror("dcf upload", err)
         else:
-            #wait_upload.destroy()
+            # wait_upload.destroy()
             tk.messagebox.showinfo("dcf upload", "done")
-
 
     def __download_dcf(self):
 
@@ -390,10 +391,11 @@ class App(tk.Frame):
         except Exception as err:
             tk.messagebox.showerror("dcf download", err)
         else:
-            answer = tk.messagebox.askquestion("dcf download", "done, do you wanna save?")
+            answer = tk.messagebox.askquestion(
+                "dcf download", "done, do you wanna save?"
+            )
             if answer == tk.messagebox.YES:
                 self.device.save()
-
 
     def __populate_parent(self):
         """

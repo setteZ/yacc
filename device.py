@@ -140,7 +140,7 @@ class Device:
         else:
             group = name
         return group
-    
+
     def get_group_name_list(self):
         """
         get the list of the index name of the object dictionary
@@ -206,7 +206,7 @@ class Device:
                             try:
                                 self.__node.sdo.download(idx, subidx, raw)
                             except Exception as err:
-                                message = (f"problem writing 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}")
+                                message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}"
                                 raise Exception(message)
             if isinstance(obj, canopen.objectdictionary.ODVariable):
                 subidx = obj.subindex
@@ -222,7 +222,7 @@ class Device:
                         try:
                             self.__node.sdo.download(idx, subidx, raw)
                         except Exception as err:
-                            message = (f"problem writing 0x{idx:04X} 0x{subidx:02X} {obj.name}: {err}")
+                            message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {obj.name}: {err}"
                             raise Exception(message)
 
     def upload_dcf(self):
@@ -236,20 +236,30 @@ class Device:
                     try:
                         value = self.__node.sdo.upload(obj.index, subobj.subindex)
                     except Exception as err:
-                        raise Exception(f"problem with 0x{obj.index:04X} 0x{subobj.subindex:02X}: {err}")
-                    value = self.__node.object_dictionary[obj.index][subobj.subindex].decode_raw(value)
+                        raise Exception(
+                            f"problem with 0x{obj.index:04X} 0x{subobj.subindex:02X}: {err}"
+                        )
+                    value = self.__node.object_dictionary[obj.index][
+                        subobj.subindex
+                    ].decode_raw(value)
                     # TODO manage value type conversion
-                    self.__node.object_dictionary[obj.index][subobj.subindex].value_raw = value
+                    self.__node.object_dictionary[obj.index][
+                        subobj.subindex
+                    ].value_raw = value
 
             if isinstance(obj, canopen.objectdictionary.ODVariable):
                 try:
                     value = self.__node.sdo.upload(obj.index, obj.subindex)
                 except Exception as err:
-                    raise Exception(f"problem with 0x{obj.index:04X} 0x{obj.subindex:02X}: {err}")
+                    raise Exception(
+                        f"problem with 0x{obj.index:04X} 0x{obj.subindex:02X}: {err}"
+                    )
                 value = self.__node.object_dictionary[obj.index].decode_raw(value)
                 # TODO manage value type conversion
                 self.__node.object_dictionary[obj.index].value_raw = value
-        canopen.objectdictionary.export_od(self.__node.object_dictionary, "upload.dcf", "dcf")
+        canopen.objectdictionary.export_od(
+            self.__node.object_dictionary, "upload.dcf", "dcf"
+        )
 
     def save(self):
         """
