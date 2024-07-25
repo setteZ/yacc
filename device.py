@@ -226,7 +226,6 @@ class Device:
                         raise Exception(f"problem with 0x{obj.index:04X} 0x{subobj.subindex:02X}: {err}")
                     value = self.__node.object_dictionary[obj.index][subobj.subindex].decode_raw(value)
                     # TODO manage value type conversion
-                    print(f"{subobj.name} = {value} ({type(value)})")
                     self.__node.object_dictionary[obj.index][subobj.subindex].value_raw = value
 
             if isinstance(obj, canopen.objectdictionary.ODVariable):
