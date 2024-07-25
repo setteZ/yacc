@@ -68,6 +68,7 @@ class App(tk.Frame):
         self.value_signed_entry = None
         self.value_float_entry = None
         self.value_hex_entry = None
+        self.save_button = None
 
         self.parent.title("")
         self.parent.resizable(False, False)
@@ -274,6 +275,10 @@ class App(tk.Frame):
                 self.value_float_entry.config(fg="grey")
                 self.value_hex_entry.config(fg="black")
 
+    def __save_action(self):
+        logging.info("save action")
+        self.save_button.grid_forget()
+
     def __write_action(self):
         logging.info("write action")
         try:
@@ -290,6 +295,7 @@ class App(tk.Frame):
             self.value_signed_text.set("")
             self.value_float_text.set("")
             self.value_hex_text.set("")
+            self.save_button.grid()
 
     def __connect(self):
         """
@@ -441,6 +447,14 @@ class App(tk.Frame):
             command_frame, text="write", command=self.__write_action
         )
         write_button.grid(column=0, row=1)
+
+        ## save
+
+        self.save_button = tk.Button(
+            command_frame, text="save", command=self.__save_action
+        )
+        self.save_button.grid(column=0, row=2)
+        self.save_button.grid_forget()
 
         # data frame
         data_frame = tk.Frame(self.parent)
