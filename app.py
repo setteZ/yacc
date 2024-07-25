@@ -388,20 +388,20 @@ class App(tk.Frame):
         # menu bar
         menubar = tk.Menu(self.parent)
         self.parent.config(menu=menubar)
-        dcf_menu = tk.Menu(menubar)
+        config_menu = tk.Menu(menubar, tearoff=False)
 
-        dcf_menu.add_command(
-            label="Upload",
+        config_menu.add_command(
+            label="Upload dcf",
             command=self.__upload_dcf,
         )
 
-        dcf_menu.add_command(
-            label="Download",
+        config_menu.add_command(
+            label="Download dcf",
             command=self.__download_dcf,
         )
-        menubar.add_cascade(label="dcf", menu=dcf_menu, underline=0)
+        menubar.add_cascade(label="Configuration", menu=config_menu, underline=0)
 
-        help_menu = tk.Menu(menubar)
+        help_menu = tk.Menu(menubar, tearoff=False)
 
         help_menu.add_command(
             label="About",
