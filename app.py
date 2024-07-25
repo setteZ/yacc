@@ -361,6 +361,10 @@ class App(tk.Frame):
                 else:
                     logging.info("no file")
 
+    def __license(self):
+        message = f"Copyright 2024 setteZ\nSPDX-License-Identifier: Apache-2.0"
+        tk.messagebox.showinfo("License", message)
+
     def __info(self):
         message = f"app version: {self.__version}\ndevice version: {self.device.get_version()}"
         tk.messagebox.showinfo("info", message)
@@ -426,6 +430,11 @@ class App(tk.Frame):
         menubar.add_cascade(label="Configuration", menu=config_menu, underline=0)
 
         help_menu = tk.Menu(menubar, tearoff=False)
+
+        help_menu.add_command(
+            label="License",
+            command=self.__license,
+        )
 
         help_menu.add_command(
             label="About",
