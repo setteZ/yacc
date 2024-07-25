@@ -204,6 +204,12 @@ class Device:
                     else:
                         self.__node.sdo.download(idx, subidx, raw)
         self.__node.sdo.download(0x1010, 0x01, b"save")
+    
+    def save(self):
+        """
+        save request
+        """
+        self.__node.sdo.download(0x1010, 0x01, b"save")
 
 
 if __name__ == "__main__":

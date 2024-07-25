@@ -277,6 +277,11 @@ class App(tk.Frame):
 
     def __save_action(self):
         logging.info("save action")
+        try:
+            self.device.save()
+        except Exception as err:
+            logging.debug(err)
+            tk.messagebox.showerror("save", "error while saving")
         self.save_button.grid_forget()
 
     def __write_action(self):
