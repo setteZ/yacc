@@ -181,7 +181,9 @@ class Device:
         """
         get the datatype of an entry given the name
         """
-        obj = self.__node.object_dictionary[group_name][entry_name]
+        obj = self.__node.object_dictionary[group_name]
+        if isinstance(obj, canopen.objectdictionary.ODRecord):
+            obj = obj[entry_name]
         return obj.data_type
 
     def download_dcf(self, filename: str):
