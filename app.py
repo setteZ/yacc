@@ -406,6 +406,7 @@ class App(tk.Frame):
         function to populate the main app window
         """
 
+        self.parent.title("YACC")
         # menu bar
         menubar = tk.Menu(self.parent)
         self.parent.config(menu=menubar)
