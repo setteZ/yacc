@@ -449,12 +449,9 @@ class App(tk.Frame):
         ## element
         element_frame = tk.LabelFrame(entry_frame, text="element")
         element_frame.grid(column=1, row=0)
-        element_list = [""]
         self.variable_ele = tk.StringVar(element_frame)
         self.variable_ele.set("")
-        self.element_opt = tk.OptionMenu(
-            element_frame, self.variable_ele, *element_list
-        )
+        self.element_opt = tk.OptionMenu(element_frame, self.variable_ele, *[""])
         self.element_opt.pack()
 
         self.variable_ele.trace("w", self.__callback_ele)
@@ -462,10 +459,9 @@ class App(tk.Frame):
         ## group
         group_frame = tk.LabelFrame(entry_frame, text="group")
         group_frame.grid(column=0, row=0)
-        group_list = ["group1", "group2", "group3"]
         self.variable_grp = tk.StringVar(group_frame)
         self.variable_grp.set("")
-        self.group_opt = tk.OptionMenu(group_frame, self.variable_grp, *group_list)
+        self.group_opt = tk.OptionMenu(group_frame, self.variable_grp, *[""])
         self.group_opt.pack()
 
         self.variable_grp.trace("w", self.__callback_grp)
