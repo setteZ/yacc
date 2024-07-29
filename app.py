@@ -298,10 +298,11 @@ class App(tk.Frame):
     def __write_action(self):
         logging.info("write action")
         try:
+            data = int(self.value_hex_text.get(), 16).to_bytes(int(self.length_text.get()), "little")
             self.device.write_entry(
                 index=int(self.idx_text.get(), 16),
                 subindex=int(self.sub_text.get(), 16),
-                data=bytes.fromhex(self.value_hex_text.get()),
+                data=data,
             )
         except Exception as err:
             logging.debug(err)
