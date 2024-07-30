@@ -421,12 +421,12 @@ class App(tk.Frame):
 
         config_menu = tk.Menu(menubar, tearoff=False)
         config_menu.add_command(
-            label="Upload dcf",
+            label="Upload dcf (read)",
             command=self.__upload_dcf,
         )
 
         config_menu.add_command(
-            label="Download dcf",
+            label="Download dcf (write)",
             command=self.__download_dcf,
         )
         menubar.add_cascade(label="Configuration", menu=config_menu, underline=0)
