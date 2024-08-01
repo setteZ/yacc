@@ -1,5 +1,5 @@
 """
-Structure for a CAN GUI
+Yet another CANopen configurator
 """
 
 import argparse
