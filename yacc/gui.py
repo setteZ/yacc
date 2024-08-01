@@ -1,5 +1,5 @@
 """
-Module for application
+Module for Graphical User Interface
 """
 
 import logging
@@ -36,7 +36,7 @@ if ALPHA != "" and BETA != "":
     sys.exit(1)
 
 
-class App(tk.Frame):
+class Gui(tk.Frame):
     """
     window creation for CAN configuration
     """
@@ -666,5 +666,5 @@ class App(tk.Frame):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     window = tk.Tk()
-    App(window)
+    Gui(window)
     window.mainloop()
