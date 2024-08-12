@@ -87,7 +87,7 @@ if __name__ == "__main__":
             sys.exit(1)
         try:
             device.connect()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             print("I can't connect to the device")
             sys.exit(1)
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         print("uploading from the device...")
         try:
             device.upload_dcf()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             print(f"error: {err}")
             sys.exit(1)
         else:
@@ -110,7 +110,7 @@ if __name__ == "__main__":
             sys.exit(1)
         try:
             device.connect()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             print("I can't connect to the device")
             sys.exit(1)
@@ -118,7 +118,7 @@ if __name__ == "__main__":
         print("downloading to the device...")
         try:
             device.download_dcf(args.file)
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             print(f"error: {err}")
             sys.exit(1)
         else:
