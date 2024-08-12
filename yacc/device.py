@@ -248,7 +248,6 @@ class Device:
                     value = self.__node.object_dictionary[obj.index][
                         subobj.subindex
                     ].decode_raw(value)
-                    # TODO manage value type conversion
                     self.__node.object_dictionary[obj.index][
                         subobj.subindex
                     ].value_raw = value
@@ -261,7 +260,6 @@ class Device:
                         f"problem with 0x{obj.index:04X} 0x{obj.subindex:02X}: {err}"
                     ) from err
                 value = self.__node.object_dictionary[obj.index].decode_raw(value)
-                # TODO manage value type conversion
                 self.__node.object_dictionary[obj.index].value_raw = value
         canopen.objectdictionary.export_od(
             self.__node.object_dictionary, "upload.dcf", "dcf"
