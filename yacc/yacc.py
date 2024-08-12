@@ -69,8 +69,24 @@ if __name__ == "__main__":
         if not os.path.isfile(args.file):
             print(f"{args.file} does not exist")
             sys.exit(1)
-        print("upload action")
-        sys.exit(0)
+        try:
+            device.connect()
+        except Exception as err:
+            logging.debug(err)
+            print("I can't connect to the device")
+            sys.exit(1)
+
+        print("uploading from the device...")
+        try:
+            device.upload_dcf()
+        except Exception as err:
+            print(f"error: {err}")
+            sys.exit(1)
+        else:
+            print("done")
+            sys.exit(0)
+        finally:
+            device.disconnect()
 
     if args.command == "download":
         if not os.path.isfile(args.file):
