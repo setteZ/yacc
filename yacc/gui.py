@@ -30,10 +30,8 @@ class Gui(tk.Frame):
         nodeid=1,
         eds_file="",
         version="",
-        *args,
-        **kwargs,
     ):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+        tk.Frame.__init__(self, parent)
         self.__version = version
         self.parent = parent
         self.parent.protocol("WM_DELETE_WINDOW", self.__exit)
