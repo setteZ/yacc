@@ -1,1 +1,2 @@
 canopen==2.3.0
+tomli_w==1.0.0

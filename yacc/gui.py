@@ -11,6 +11,7 @@ import struct
 
 # requirements
 from canopen.objectdictionary import datatypes
+import tomli_w
 
 # local module
 from device import Device
@@ -300,6 +301,18 @@ class Gui(tk.Frame):
                 logging.debug(err)
                 tk.messagebox.showerror("connect", "I can't connect to the device")
             else:
+                config = {
+                    "file": {
+                        "filename": self.file_str_entry.get().split(os.getcwd())[1][1:],
+                    },
+                    "can": {
+                        "interface": self.interface_variable.get(),
+                        "baudrate": int(self.variable_br.get()),
+                        "nodeid": int(self.variable_node.get()),
+                    },
+                }
+                with open("config.toml", "wb") as f:
+                    tomli_w.dump(config, f)
                 logging.info(
                     "interface = %s | baudrate = %s | node-id = %s | eds = %s",
                     self.interface_variable.get(),
