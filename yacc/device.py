@@ -44,7 +44,9 @@ class Device:
         self.__baudrate = baudrate
         self.__nodeid = nodeid
         if interface not in ["peak", "kvaser", "ixxat"]:
-            raise Exception("interface not available")
+            raise Exception(  # pylint: disable=broad-exception-raised
+                "interface not available"
+            )
         if interface == "peak":
             self.__interface = "pcan"
             self.__channel = "PCAN_USBBUS1"
@@ -139,8 +141,8 @@ class Device:
         group = ""
         try:
             name = self.__node.object_dictionary[idx].name
-        except:
-            pass
+        except Exception as err:  # pylint: disable=broad-exception-caught
+            logging.debug(err)
         else:
             group = name
         return group
@@ -205,7 +207,7 @@ class Device:
                         try:
                             raw = od[idx][subidx].encode_raw(value)
                         except Exception as err:
-                            raise Exception(
+                            raise Exception(  # pylint: disable=broad-exception-raised
                                 f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
                             ) from err
                         else:
@@ -213,7 +215,9 @@ class Device:
                                 self.__node.sdo.download(idx, subidx, raw)
                             except Exception as err:
                                 message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}"
-                                raise Exception(message) from err
+                                raise Exception(  # pylint: disable=broad-exception-raised
+                                    message
+                                ) from err
             if isinstance(obj, canopen.objectdictionary.ODVariable):
                 subidx = obj.subindex
                 if obj.access_type == "rw":
@@ -221,7 +225,7 @@ class Device:
                     try:
                         raw = od[idx].encode_raw(value)
                     except Exception as err:
-                        raise Exception(
+                        raise Exception(  # pylint: disable=broad-exception-raised
                             f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
                         ) from err
                     else:
@@ -229,7 +233,9 @@ class Device:
                             self.__node.sdo.download(idx, subidx, raw)
                         except Exception as err:
                             message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {obj.name}: {err}"
-                            raise Exception(message) from err
+                            raise Exception(  # pylint: disable=broad-exception-raised
+                                message
+                            ) from err
 
     def upload_dcf(self):
         """
@@ -242,7 +248,7 @@ class Device:
                     try:
                         value = self.__node.sdo.upload(obj.index, subobj.subindex)
                     except Exception as err:
-                        raise Exception(
+                        raise Exception(  # pylint: disable=broad-exception-raised
                             f"problem with 0x{obj.index:04X} 0x{subobj.subindex:02X}: {err}"
                         ) from err
                     value = self.__node.object_dictionary[obj.index][
@@ -256,7 +262,7 @@ class Device:
                 try:
                     value = self.__node.sdo.upload(obj.index, obj.subindex)
                 except Exception as err:
-                    raise Exception(
+                    raise Exception(  # pylint: disable=broad-exception-raised
                         f"problem with 0x{obj.index:04X} 0x{obj.subindex:02X}: {err}"
                     ) from err
                 value = self.__node.object_dictionary[obj.index].decode_raw(value)
