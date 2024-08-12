@@ -92,8 +92,24 @@ if __name__ == "__main__":
         if not os.path.isfile(args.file):
             print(f"{args.file} does not exist")
             sys.exit(1)
-        print("download action")
-        sys.exit(0)
+        try:
+            device.connect()
+        except Exception as err:
+            logging.debug(err)
+            print("I can't connect to the device")
+            sys.exit(1)
+
+        print("downloading to the device...")
+        try:
+            device.download_dcf(args.file)
+        except Exception as err:
+            print(f"error: {err}")
+            sys.exit(1)
+        else:
+            print("done")
+            sys.exit(0)
+        finally:
+            device.disconnect()
 
     if args.command is None:
         window = tk.Tk()
