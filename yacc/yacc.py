@@ -21,10 +21,24 @@ except ImportError:
 from gui import Gui
 from device import Device
 
+VER = "0.1.0"
+ALPHA = ""
+BETA = "1"
+
+if ALPHA != "" and BETA != "":
+    sys.exit(1)
+
+VERSION = VER
+if ALPHA != "":
+    VERSION += "-alpha." + ALPHA
+if BETA != "":
+    VERSION += "-beta." + BETA
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["upload", "download"], nargs="?")
     parser.add_argument("-f", "--file", default="")
+    parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--debug", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--info", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
@@ -114,6 +128,12 @@ if __name__ == "__main__":
     if args.command is None:
         window = tk.Tk()
         Gui(
-            window, device, interface=itf, baudrate=baud, nodeid=nid, eds_file=args.file
+            window,
+            device,
+            interface=itf,
+            baudrate=baud,
+            nodeid=nid,
+            eds_file=args.file,
+            version=VERSION,
         )
         window.mainloop()

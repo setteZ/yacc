@@ -15,15 +15,6 @@ from canopen.objectdictionary import datatypes
 # local module
 from device import Device
 
-VERSION = "0.1.0"
-ALPHA = "1"
-BETA = ""
-
-if ALPHA != "" and BETA != "":
-    import sys
-
-    sys.exit(1)
-
 
 class Gui(tk.Frame):
     """
@@ -38,15 +29,12 @@ class Gui(tk.Frame):
         baudrate=250,
         nodeid=1,
         eds_file="",
+        version="",
         *args,
         **kwargs,
     ):
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        self.__version = VERSION
-        if ALPHA != "":
-            self.__version += "-alpha." + ALPHA
-        if BETA != "":
-            self.__version += "-beta." + BETA
+        self.__version = version
         self.parent = parent
         self.parent.protocol("WM_DELETE_WINDOW", self.__exit)
         self.variable_ele = None
@@ -344,7 +332,7 @@ class Gui(tk.Frame):
         tk.messagebox.showinfo("License", message)
 
     def __info(self):
-        message = f"app version: {self.__version}\ndevice version: {self.device.get_version()}"
+        message = f"version: {self.__version}"
         tk.messagebox.showinfo("info", message)
 
     def __upload_dcf(self):

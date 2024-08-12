@@ -9,15 +9,6 @@ import struct
 # requirements
 import canopen
 
-VERSION = "0.1.0"
-ALPHA = "1"
-BETA = ""
-
-if ALPHA != "" and BETA != "":
-    import sys
-
-    sys.exit(1)
-
 
 @dataclasses.dataclass
 class Data:
@@ -46,11 +37,6 @@ class Device:
         interface: str = "peak",
     ):
 
-        self.__version = VERSION
-        if ALPHA != "":
-            self.__version += "-alpha." + ALPHA
-        if BETA != "":
-            self.__version += "-beta." + BETA
         if filename == "":
             self.__filename = None
         else:
@@ -91,12 +77,6 @@ class Device:
         method to set the interface
         """
         self.__interface = interface
-
-    def get_version(self):
-        """
-        method to ghet access to version
-        """
-        return self.__version
 
     def connect(self):
         """
