@@ -75,6 +75,8 @@ if __name__ == "__main__":
 
     if len(eds_file) == 1:
         eds = os.path.join(current_dir, eds_file[0])
+    else:
+        eds = ""
     if args.file == "":
         args.file = eds
 
