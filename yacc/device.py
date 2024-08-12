@@ -68,6 +68,30 @@ class Device:
         self.__network = None
         self.__node = None
 
+    def set_objdict(self, objdict):
+        """
+        method to set the object dictionary aka eds file
+        """
+        self.__filename = objdict
+
+    def set_baudrate(self, baudrate):
+        """
+        method to set the baudrate
+        """
+        self.__baudrate = baudrate
+
+    def set_nodeid(self, nodeid):
+        """
+        method to set the nodeid
+        """
+        self.__nodeid = nodeid
+
+    def set_interface(self, interface):
+        """
+        method to set the interface
+        """
+        self.__interface = interface
+
     def get_version(self):
         """
         method to ghet access to version
