@@ -8,17 +8,6 @@ import tkinter as tk
 from tkinter import filedialog as fd
 import struct
 
-try:
-    import tomllib
-except ImportError:
-    try:
-        import tomli as tomllib
-    except ImportError:
-        import sys
-
-        print("error: missing both tomllib and tomli module")
-        sys.exit(1)
-
 
 # requirements
 from canopen.objectdictionary import datatypes
@@ -41,7 +30,16 @@ class Gui(tk.Frame):
     window creation for CAN configuration
     """
 
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(
+        self,
+        parent,
+        interface="peak",
+        baudrate=250,
+        nodeid=1,
+        eds_file="",
+        *args,
+        **kwargs,
+    ):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self.__version = VERSION
         if ALPHA != "":
@@ -55,6 +53,10 @@ class Gui(tk.Frame):
         self.idx_text = None
         self.sub_text = None
         self.file_str_entry = None
+        self.eds_file = eds_file
+        self.interface = interface
+        self.baudrate = baudrate
+        self.nodeid = nodeid
         self.variable_node = None
         self.device = None
         self.value_unsigned_text = None
@@ -113,34 +115,8 @@ class Gui(tk.Frame):
         file_frame.grid(column=0, row=0)
 
         self.file_str_entry = tk.StringVar(file_frame)
+        self.file_str_entry.set(os.path.join(os.getcwd(), self.eds_file))
 
-        eds_file = []
-        current_dir = os.getcwd()
-        for x in os.listdir(current_dir):
-            if x.endswith(".eds"):
-                eds_file.append(x)
-        itf = "peak"
-        baud = "250"
-        nid = "1"
-        toml_path = os.path.join(os.getcwd(), "config.toml")
-        logging.info(toml_path)
-        if os.path.exists(toml_path):
-            with open(toml_path, "rb") as f:
-                try:
-                    toml_dict = tomllib.load(f)
-                except tomllib.TOMLDecodeError:
-                    logging.info("not a valid TOML file")
-                else:
-                    eds_file = [toml_dict["file"]["filename"]]
-                    itf = toml_dict["can"]["interface"]
-                    baud = str(toml_dict["can"]["baudrate"])
-                    nid = str(toml_dict["can"]["nodeid"])
-                    logging.info("%s | %s | %s | %s", eds_file, itf, baud, nid)
-        else:
-            logging.info("missing config.toml file")
-
-        if len(eds_file) == 1:
-            self.file_str_entry.set(os.path.join(current_dir, eds_file[0]))
         file_entry = tk.Entry(file_frame, textvariable=self.file_str_entry)
         file_entry.grid(column=0, row=0)
         file_button = tk.Button(
@@ -152,7 +128,7 @@ class Gui(tk.Frame):
         interface_frame.grid(column=0, row=1)
         interface_list = ["peak", "kvaser", "ixxat"]
         self.interface_variable = tk.StringVar(interface_frame)
-        self.interface_variable.set(itf)
+        self.interface_variable.set(self.interface)
         interface_opt = tk.OptionMenu(
             interface_frame, self.interface_variable, *interface_list
         )
@@ -164,7 +140,7 @@ class Gui(tk.Frame):
         baudrate_frame.grid(column=0, row=2)
         baudrate_list = ["125", "250", "500"]
         self.variable_br = tk.StringVar(baudrate_frame)
-        self.variable_br.set(baud)
+        self.variable_br.set(self.baudrate)
         baudrate_opt = tk.OptionMenu(baudrate_frame, self.variable_br, *baudrate_list)
         baudrate_opt.pack()
 
@@ -172,7 +148,7 @@ class Gui(tk.Frame):
 
         nodeid_frame = tk.LabelFrame(self.config_window, text="node id")
         nodeid_frame.grid(column=0, row=3)
-        self.variable_node = tk.StringVar(nodeid_frame, value=nid)
+        self.variable_node = tk.StringVar(nodeid_frame, value=self.nodeid)
         nodeid_entry = tk.Entry(nodeid_frame, textvariable=self.variable_node)
         nodeid_entry.pack()
 
