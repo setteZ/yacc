@@ -328,7 +328,7 @@ class Gui(tk.Frame):
                     logging.info("no file")
 
     def __license(self):
-        message = f"Copyright 2024 setteZ\nSPDX-License-Identifier: Apache-2.0"
+        message = "Copyright 2024 setteZ\nSPDX-License-Identifier: Apache-2.0"
         tk.messagebox.showinfo("License", message)
 
     def __info(self):
