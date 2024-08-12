@@ -212,7 +212,7 @@ class Gui(tk.Frame):
                 index=int(self.idx_text.get(), 16),
                 subindex=int(self.sub_text.get(), 16),
             )
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             tk.messagebox.showerror("read", "error while reading")
         else:
@@ -253,7 +253,7 @@ class Gui(tk.Frame):
         logging.info("save action")
         try:
             self.device.save()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             tk.messagebox.showerror("save", "error while saving")
         self.save_button.grid_forget()
@@ -269,7 +269,7 @@ class Gui(tk.Frame):
                 subindex=int(self.sub_text.get(), 16),
                 data=data,
             )
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             tk.messagebox.showerror("write", "error while writing")
         else:
@@ -288,7 +288,7 @@ class Gui(tk.Frame):
             self.device.set_baudrate(int(self.variable_br.get()))
             self.device.set_nodeid(int(self.variable_node.get()))
             self.device.set_interface(self.interface_variable.get())
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             tk.messagebox.showerror(
                 "connect", "there something wrong with the configuration"
@@ -296,7 +296,7 @@ class Gui(tk.Frame):
         else:
             try:
                 self.device.connect()
-            except Exception as err:
+            except Exception as err:  # pylint: disable=broad-exception-caught
                 logging.debug(err)
                 tk.messagebox.showerror("connect", "I can't connect to the device")
             else:
@@ -340,7 +340,7 @@ class Gui(tk.Frame):
         try:
             # wait_upload.withdraw()
             self.device.upload_dcf()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             # wait_upload.destroy()
             tk.messagebox.showerror("dcf upload", err)
         else:
@@ -356,7 +356,7 @@ class Gui(tk.Frame):
         )
         try:
             self.device.download_dcf(filename)
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             tk.messagebox.showerror("dcf download", err)
         else:
             answer = tk.messagebox.askquestion(
@@ -546,13 +546,13 @@ class Gui(tk.Frame):
         logging.info("unsigned entered")
         try:
             data_length = int(self.length_text.get())
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             tk.messagebox.showerror("data", "wrong lenght")
         else:
             try:
                 data_unsigned = int(self.value_unsigned_entry.get(), 10)
-            except Exception as err:
+            except Exception as err:  # pylint: disable=broad-exception-caught
                 logging.debug(err)
                 tk.messagebox.showerror("data", "wrong unsigned value")
             else:
@@ -587,7 +587,7 @@ class Gui(tk.Frame):
         logging.info("float entered")
         try:
             data_float = float(self.value_float_text.get())
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             tk.messagebox.showerror("data", "wrong float")
         else:
@@ -629,6 +629,6 @@ class Gui(tk.Frame):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     window = tk.Tk()
-    device = Device()
-    Gui(window, device)
+    dev = Device()
+    Gui(window, dev)
     window.mainloop()
