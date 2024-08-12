@@ -33,6 +33,7 @@ class Gui(tk.Frame):
     def __init__(
         self,
         parent,
+        device,
         interface="peak",
         baudrate=250,
         nodeid=1,
@@ -58,7 +59,7 @@ class Gui(tk.Frame):
         self.baudrate = baudrate
         self.nodeid = nodeid
         self.variable_node = None
-        self.device = None
+        self.device = device
         self.value_unsigned_text = None
         self.value_signed_text = None
         self.value_hex_text = None
@@ -274,7 +275,9 @@ class Gui(tk.Frame):
     def __write_action(self):
         logging.info("write action")
         try:
-            data = int(self.value_hex_text.get(), 16).to_bytes(int(self.length_text.get()), "little")
+            data = int(self.value_hex_text.get(), 16).to_bytes(
+                int(self.length_text.get()), "little"
+            )
             self.device.write_entry(
                 index=int(self.idx_text.get(), 16),
                 subindex=int(self.sub_text.get(), 16),
@@ -295,12 +298,10 @@ class Gui(tk.Frame):
         new window creation after "connect" button is clicked
         """
         try:
-            self.device = Device(
-                self.file_str_entry.get(),
-                int(self.variable_br.get()),
-                int(self.variable_node.get()),
-                self.interface_variable.get(),
-            )
+            self.device.set_objdict(self.file_str_entry.get())
+            self.device.set_baudrate(int(self.variable_br.get()))
+            self.device.set_nodeid(int(self.variable_node.get()))
+            self.device.set_interface(self.interface_variable.get())
         except Exception as err:
             logging.debug(err)
             tk.messagebox.showerror(
@@ -642,5 +643,6 @@ class Gui(tk.Frame):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
     window = tk.Tk()
-    Gui(window)
+    device = Device()
+    Gui(window, device)
     window.mainloop()

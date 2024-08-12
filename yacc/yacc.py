@@ -19,6 +19,7 @@ except ImportError:
 
 # local module
 from gui import Gui
+from device import Device
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -63,6 +64,7 @@ if __name__ == "__main__":
     if args.file == "":
         args.file = eds
 
+    device = Device(filename=args.file, baudrate=baud, nodeid=nid, interface=itf)
     if args.command == "upload":
         if not os.path.isfile(args.file):
             print(f"{args.file} does not exist")
@@ -79,5 +81,7 @@ if __name__ == "__main__":
 
     if args.command is None:
         window = tk.Tk()
-        Gui(window, interface=itf, baudrate=baud, nodeid=nid, eds_file=args.file)
+        Gui(
+            window, device, interface=itf, baudrate=baud, nodeid=nid, eds_file=args.file
+        )
         window.mainloop()
