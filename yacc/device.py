@@ -207,13 +207,13 @@ class Device:
                         except Exception as err:
                             raise Exception(
                                 f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
-                            )
+                            ) from err
                         else:
                             try:
                                 self.__node.sdo.download(idx, subidx, raw)
                             except Exception as err:
                                 message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}"
-                                raise Exception(message)
+                                raise Exception(message) from err
             if isinstance(obj, canopen.objectdictionary.ODVariable):
                 subidx = obj.subindex
                 if obj.access_type == "rw":
@@ -223,13 +223,13 @@ class Device:
                     except Exception as err:
                         raise Exception(
                             f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
-                        )
+                        ) from err
                     else:
                         try:
                             self.__node.sdo.download(idx, subidx, raw)
                         except Exception as err:
                             message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {obj.name}: {err}"
-                            raise Exception(message)
+                            raise Exception(message) from err
 
     def upload_dcf(self):
         """
@@ -244,7 +244,7 @@ class Device:
                     except Exception as err:
                         raise Exception(
                             f"problem with 0x{obj.index:04X} 0x{subobj.subindex:02X}: {err}"
-                        )
+                        ) from err
                     value = self.__node.object_dictionary[obj.index][
                         subobj.subindex
                     ].decode_raw(value)
@@ -259,7 +259,7 @@ class Device:
                 except Exception as err:
                     raise Exception(
                         f"problem with 0x{obj.index:04X} 0x{obj.subindex:02X}: {err}"
-                    )
+                    ) from err
                 value = self.__node.object_dictionary[obj.index].decode_raw(value)
                 # TODO manage value type conversion
                 self.__node.object_dictionary[obj.index].value_raw = value
