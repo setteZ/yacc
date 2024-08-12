@@ -51,7 +51,7 @@ if __name__ == "__main__":
     eds_file = []
     current_dir = os.getcwd()
     for x in os.listdir(current_dir):
-        if x.endswith(".eds"):
+        if x.endswith(".EDS"):
             eds_file.append(x)
     toml_path = os.path.join(os.getcwd(), "config.toml")
     logging.info(toml_path)
@@ -63,24 +63,24 @@ if __name__ == "__main__":
                 logging.info("not a valid TOML file")
             else:
                 eds_file = [toml_dict["file"]["filename"]]
-                itf = toml_dict["can"]["interface"]
-                baud = str(toml_dict["can"]["baudrate"])
-                nid = str(toml_dict["can"]["nodeid"])
-                logging.info("%s | %s | %s | %s", eds_file, itf, baud, nid)
+                ITF = toml_dict["can"]["interface"]
+                BAUD = str(toml_dict["can"]["baudrate"])
+                NID = str(toml_dict["can"]["nodeid"])
+                logging.info("%s | %s | %s | %s", eds_file, ITF, BAUD, NID)
     else:
-        itf = "peak"
-        baud = 250
-        nid = 1
+        ITF = "peak"
+        BAUD = 250
+        NID = 1
         logging.info("missing config.toml file")
 
     if len(eds_file) == 1:
-        eds = os.path.join(current_dir, eds_file[0])
+        EDS = os.path.join(current_dir, eds_file[0])
     else:
-        eds = ""
+        EDS = ""
     if args.file == "":
-        args.file = eds
+        args.file = EDS
 
-    device = Device(filename=args.file, baudrate=baud, nodeid=nid, interface=itf)
+    device = Device(filename=args.file, baudrate=BAUD, nodeid=NID, interface=ITF)
     if args.command == "upload":
         if not os.path.isfile(args.file):
             print(f"{args.file} does not exist")
@@ -132,9 +132,9 @@ if __name__ == "__main__":
         Gui(
             window,
             device,
-            interface=itf,
-            baudrate=baud,
-            nodeid=nid,
+            interface=ITF,
+            baudrate=BAUD,
+            nodeid=NID,
             eds_file=args.file,
             version=VERSION,
         )
