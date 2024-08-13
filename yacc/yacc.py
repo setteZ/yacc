@@ -36,8 +36,9 @@ if BETA != "":
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["upload", "download"], nargs="?")
+    parser.add_argument("command", choices=["upload", "download", "save"], nargs="?")
     parser.add_argument("-f", "--file", default="")
+    parser.add_argument("--save", action="store_true")
     parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--debug", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--info", action="store_true", help=argparse.SUPPRESS)
@@ -120,6 +121,31 @@ if __name__ == "__main__":
             device.download_dcf(args.file)
         except Exception as err:  # pylint: disable=broad-exception-caught
             print(f"error: {err}")
+            sys.exit(1)
+        else:
+            print("done", end="")
+            if args.save:
+                device.save()
+                print(" and saved")
+            else:
+                print("\nremember to save (if needed)")
+            sys.exit(0)
+        finally:
+            device.disconnect()
+
+    if args.command == "save":
+        try:
+            device.connect()
+        except Exception as err:  # pylint: disable=broad-exception-caught
+            logging.debug(err)
+            print("I can't connect to the device")
+            sys.exit(1)
+
+        print("saving")
+        try:
+            device.save()
+        except Exception as err:  # pylint: disable=broad-exception-caught
+            print(err)
             sys.exit(1)
         else:
             print("done")
