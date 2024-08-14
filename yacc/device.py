@@ -56,6 +56,22 @@ class Device:
         self.__network = None
         self.__node = None
 
+    def __pdo_disable(self, direction, number):
+        """
+        method to disable the PDO
+        """
+        if direction == "R":
+            idx = 0x1400
+        elif direction == "T":
+            idx = 0x1800
+        idx += number - 1
+        self.__node.nmt.state = "PRE-OPERATIONAL"
+        self.__node.nmt.wait_for_heartbeat()
+        assert self.__node.nmt.state == "PRE-OPERATIONAL"
+        cobid = self.__node.sdo.upload(idx, 0x01)
+        cobid_disabled = (int(cobid.hex(), 16) | 0x16).to_bytes(4, "big")
+        cobid = self.__node.sdo.download(idx, 0x01, cobid_disabled)
+
     def set_objdict(self, objdict):
         """
         method to set the object dictionary aka eds file
@@ -203,6 +219,13 @@ class Device:
                 for subobj in obj.values():
                     subidx = subobj.subindex
                     if subobj.access_type == "rw":
+                        a = idx & 0xFFFC
+                        if a in [0x1400, 0x1600, 0x1800, 0x1A00]:
+                            if a in [0x1400, 0x1600]:
+                                direction = "R"
+                            else:
+                                direction = "T"
+                            self.__pdo_disable(direction, idx & 0x3 + 1)
                         value = od[idx][subidx].value
                         try:
                             raw = od[idx][subidx].encode_raw(value)
