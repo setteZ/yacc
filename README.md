@@ -1,5 +1,5 @@
 # Yet Another CANopen Configurator
-YACC is a Python wrapper of the [canopen](https://github.com/christiansandberg/canopen) library to easily read and write the configuration of a device.
+YACC is a simple read&write parameter set written on top of the [canopen](https://github.com/christiansandberg/canopen) library.
 
 ## Prerequisites
 The [PEAK](https://www.peak-system.com/), [kvaser](https://kvaser.com/) and [ixxat](https://www.hms-networks.com/ixxat) devices are the possible selections: make sure to have the proper driver installed.
@@ -10,7 +10,7 @@ Clone the repository and install the requirements.
 ## Usage
 There are two way to use YACC:
 - a clean `yacc.py` will launch the GUI
-- a geek `yacc.py -h` will show you the CLI commands
+- a geek `yacc.py -h` will show you the CLI usage
 
 ## Features
 There is the possibility to:
