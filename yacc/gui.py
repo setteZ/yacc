@@ -99,7 +99,7 @@ class Gui(tk.Frame):
         self.config_window.title("configuration")
         self.config_window.resizable(False, False)
 
-        file_frame = tk.LabelFrame(self.config_window, text="file")
+        file_frame = tk.LabelFrame(self.config_window, text="object dictionary")
         file_frame.grid(column=0, row=0)
 
         self.file_str_entry = tk.StringVar(file_frame)
@@ -302,7 +302,7 @@ class Gui(tk.Frame):
                 tk.messagebox.showerror("connect", "I can't connect to the device")
             else:
                 config = {
-                    "file": {
+                    "object_dictionary": {
                         "filename": self.file_str_entry.get().split(os.getcwd())[1][1:],
                     },
                     "can": {

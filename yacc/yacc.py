@@ -63,7 +63,7 @@ if __name__ == "__main__":
             except tomllib.TOMLDecodeError:
                 logging.info("not a valid TOML file")
             else:
-                eds_file = [toml_dict["file"]["filename"]]
+                eds_file = [toml_dict["object_dictionary"]["filename"]]
                 ITF = toml_dict["can"]["interface"]
                 BAUD = str(toml_dict["can"]["baudrate"])
                 NID = str(toml_dict["can"]["nodeid"])
