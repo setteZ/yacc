@@ -20,19 +20,7 @@ except ImportError:
 # local module
 from gui import Gui
 from device import Device
-
-VER = "0.1.0"
-ALPHA = ""
-BETA = "1"
-
-if ALPHA != "" and BETA != "":
-    sys.exit(1)
-
-VERSION = VER
-if ALPHA != "":
-    VERSION += "-alpha." + ALPHA
-if BETA != "":
-    VERSION += "-beta." + BETA
+from __init__ import __version__ as VERSION
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
