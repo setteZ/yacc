@@ -5,7 +5,14 @@ YACC is a simple read&write parameter set written on top of the [canopen](https:
 The [PEAK](https://www.peak-system.com/), [kvaser](https://kvaser.com/) and [ixxat](https://www.hms-networks.com/ixxat) devices are the possible selections: make sure to have the proper driver installed.
 
 ## Installation
-Clone the repository and install the requirements.
+Clone the repository, create a virtual environment, activate it and install the requirements
+```bash
+git clone https://github.com/setteZ/yacc.git
+cd yacc
+python3 -m venv .venv
+source .venv/bin/activate
+pip install .
+```
 
 ## Usage
 There are two way to use YACC:
