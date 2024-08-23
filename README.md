@@ -25,5 +25,5 @@ There is the possibility to:
 2. download into the device a specific configuration (the .dcf file)
 3. tell to the device to `save` the configuration
 
-bonus: the GUI gives the possibility to read/write a single entry.
-That's all
+Bonus: the GUI gives the possibility to read/write a single entry.
+That's all.
