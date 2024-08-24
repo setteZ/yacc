@@ -3,7 +3,6 @@ __pycache__
 *.eds
 *.dcf
 config.toml
-*.lock
 dist/
 build/
 *.spec
