@@ -22,7 +22,11 @@ from gui import Gui
 from device import Device
 from __init__ import __version__ as VERSION
 
-if __name__ == "__main__":
+
+def main():
+    """
+    Main function
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["upload", "download", "save"], nargs="?")
     parser.add_argument("-f", "--file", default="")
@@ -153,3 +157,7 @@ if __name__ == "__main__":
             version=VERSION,
         )
         window.mainloop()
+
+
+if __name__ == "__main__":
+    main()
