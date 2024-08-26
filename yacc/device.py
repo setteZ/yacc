@@ -225,7 +225,7 @@ class Device:
                                 direction = "R"
                             else:
                                 direction = "T"
-                            self.__pdo_disable(direction, idx & 0x3 + 1)
+                            self.__pdo_disable(direction, (idx & 0x3) + 1)
                         value = od[idx][subidx].value
                         try:
                             raw = od[idx][subidx].encode_raw(value)
