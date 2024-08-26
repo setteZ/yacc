@@ -237,7 +237,7 @@ class Device:
                             try:
                                 self.__node.sdo.download(idx, subidx, raw)
                             except Exception as err:
-                                message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}"
+                                message = f"problem writing {raw} to 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}"
                                 raise Exception(  # pylint: disable=broad-exception-raised
                                     message
                                 ) from err
