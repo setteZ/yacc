@@ -47,12 +47,7 @@ class Device:
             raise Exception(  # pylint: disable=broad-exception-raised
                 "interface not available"
             )
-        if interface == "peak":
-            self.__interface = "pcan"
-            self.__channel = "PCAN_USBBUS1"
-        else:
-            self.__interface = interface
-            self.__channel = 0
+        self.set_interface(interface)
         self.__network = None
         self.__node = None
 
@@ -94,7 +89,12 @@ class Device:
         """
         method to set the interface
         """
-        self.__interface = interface
+        if interface == "peak":
+            self.__interface = "pcan"
+            self.__channel = "PCAN_USBBUS1"
+        else:
+            self.__interface = interface
+            self.__channel = 0
 
     def connect(self):
         """
