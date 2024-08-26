@@ -88,6 +88,7 @@ class Gui(tk.Frame):
         filename = fd.askopenfilename(
             title="Open a file", initialdir=os.getcwd(), filetypes=filetypes
         )
+        filename = os.path.abspath(filename)
         logging.info("selected file: %s", filename)
         self.file_str_entry.set(filename)
 
