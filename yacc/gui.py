@@ -384,7 +384,7 @@ class Gui(tk.Frame):
         function to populate the main app window
         """
 
-        self.parent.title("YACC")
+        self.parent.title(f"YACC - {self.__version}")
         # menu bar
         menubar = tk.Menu(self.parent)
         self.parent.config(menu=menubar)
