@@ -1,4 +1,8 @@
+<div align="center">
+<img src="media/yacc.png" width=500/>
+
 # Yet Another CANopen Configurator
+</div>
 YACC is a simple read&write parameter set written on top of the [canopen](https://github.com/christiansandberg/canopen) library.
 
 ## Prerequisites
