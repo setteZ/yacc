@@ -6,8 +6,6 @@ pip install .
 pip install .[build]
 if exist "build\" rm -r build\
 if exist "dist\" rm -r dist\
-pyinstaller --icon=.\images\yacc.ico --onefile .\yacc\yacc.py -p .\yacc
-if errorlevel 0 (
-    rm -r build\
-)
+pyinstaller --icon=.\media\yacc.ico --onefile .\yacc\yacc.py -p .\yacc
+if exist "build\" rm -r build\
 call deactivate && (rm -r build_venv\)
