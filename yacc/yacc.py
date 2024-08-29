@@ -57,8 +57,8 @@ def main():
             else:
                 eds_file = [toml_dict["object_dictionary"]["filename"]]
                 ITF = toml_dict["can"]["interface"]
-                BAUD = str(toml_dict["can"]["baudrate"])
-                NID = str(toml_dict["can"]["nodeid"])
+                BAUD = int(toml_dict["can"]["baudrate"])
+                NID = int(toml_dict["can"]["nodeid"])
                 logging.info("%s | %s | %s | %s", eds_file, ITF, BAUD, NID)
     else:
         ITF = "peak"
