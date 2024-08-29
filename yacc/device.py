@@ -137,6 +137,7 @@ class Device:
         ba.reverse()
         data.hex = "".join(f"{x:02X}" for x in ba)
         data.unsigned = int.from_bytes(bytes=data.bytes, byteorder="little")
+        data.signed = int.from_bytes(bytes=data.bytes, byteorder="little", signed=True)
         if data.length == 4:
             data.float = struct.unpack("!f", ba)[0]
         return data
