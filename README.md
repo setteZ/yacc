@@ -4,7 +4,7 @@
 # Yet Another CANopen Configurator
 </div>
 
-YACC is a simple read&write parameter set written on top of the [canopen](https://github.com/christiansandberg/canopen) library.
+YACC is a simple read&write CANopen parameter set written on top of the [canopen](https://github.com/christiansandberg/canopen) library.
 
 ## Prerequisites
 The [PEAK](https://www.peak-system.com/), [kvaser](https://kvaser.com/) and [ixxat](https://www.hms-networks.com/ixxat) devices are the possible selections: make sure to have the proper driver installed.
