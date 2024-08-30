@@ -1,0 +1,25 @@
+name: Build Windows exe artifact
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+    - name: Build project
+      run: scripts/win_build.bat
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: win_build
+        path: dist/
+        retention-days: 1
+        if-no-files-found: error
