@@ -8,6 +8,7 @@ dependencies = [
     "canopen==2.3.0",
     "tomli==2.0.1;python_version<'3.11'",
     "tomli_w==1.0.0",
+    "uptime==3.0.1",
 ]
 
 [project.optional-dependencies]
