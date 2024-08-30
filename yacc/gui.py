@@ -31,6 +31,7 @@ class Gui(tk.Frame):
         nodeid=1,
         eds_file="",
         version="",
+        icon="",
     ):
         tk.Frame.__init__(self, parent)
         self.__version = version
@@ -60,11 +61,13 @@ class Gui(tk.Frame):
         self.value_hex_entry = None
         self.save_button = None
 
+        self.parent.iconbitmap(icon)
         self.parent.title("")
         self.parent.resizable(False, False)
         self.__populate_parent()
         self.parent.withdraw()
         self.config_window = tk.Tk()
+        self.config_window.iconbitmap(icon)
         self.config_window.protocol("WM_DELETE_WINDOW", self.__exit)
         self.__create_config_window()
 

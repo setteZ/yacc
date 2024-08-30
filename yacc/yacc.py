@@ -152,6 +152,10 @@ def main():
 
     if args.command is None:
         window = tk.Tk()
+        root_path = os.path.dirname(__file__)
+        if not(getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')):
+            root_path = root_path[:-4]
+        icon_path = os.path.join(root_path,"media","yacc.ico")
         Gui(
             window,
             device,
@@ -160,6 +164,7 @@ def main():
             nodeid=NID,
             eds_file=args.file,
             version=VERSION,
+            icon=icon_path,
         )
         window.mainloop()
 
