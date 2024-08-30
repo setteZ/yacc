@@ -1,9 +1,6 @@
 #! /bin/bash
-if [ ! -d "build_venv" ]; then
-  python -m venv build_venv
-fi
-source build_venv/bin/activate
-python -m pip install --upgrade pip
+python -m venv --clear --upgrade-deps .venv_build
+source .venv_build/bin/activate
 pip install .
 pip install .[build]
 if [ -d "build" ]; then
@@ -13,8 +10,7 @@ if [ -d "dist" ]; then
   rm -r dist
 fi
 pyinstaller --icon=./media/yacc.ico --onefile ./yacc/yacc.py -p ./yacc
-if [ -d "build" ]; then
+if [ $? -eq 0 ]; then
   rm -r build
 fi
-deactivate
-rm -r build_venv
+deactivates

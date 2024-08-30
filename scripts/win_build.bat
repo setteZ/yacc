@@ -1,11 +1,12 @@
 @echo off
-if not exist "build_venv\" python -m venv build_venv
-call build_venv\Scripts\activate
-python -m pip install --upgrade pip
+python -m venv --clear --upgrade-deps .venv_build
+call .venv_build\Scripts\activate
 pip install .
 pip install .[build]
 if exist "build\" rm -r build\
 if exist "dist\" rm -r dist\
 pyinstaller --icon=.\media\yacc.ico --onefile .\yacc\yacc.py -p .\yacc
-if exist "build\" rm -r build\
-call deactivate && (rm -r build_venv\)
+if %errorlevel" equ 0 (
+    rm -r build\
+)
+call deactivate
