@@ -1,5 +1,7 @@
 name: Build Windows exe artifact
 
+on: workflow_dispatch
+
 permissions:
   contents: read
 
