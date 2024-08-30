@@ -13,4 +13,4 @@ pyinstaller --icon=./media/yacc.ico --onefile ./yacc/yacc.py -p ./yacc
 if [ $? -eq 0 ]; then
   rm -r build
 fi
-deactivates
+deactivate
