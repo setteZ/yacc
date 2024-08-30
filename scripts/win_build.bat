@@ -6,7 +6,7 @@ pip install .[build]
 if exist "build\" rm -r build\
 if exist "dist\" rm -r dist\
 pyinstaller --icon=.\media\yacc.ico --onefile .\yacc\yacc.py -p .\yacc
-if %errorlevel" equ 0 (
+if %errorlevel% equ 0 (
     rm -r build\
 )
 call deactivate
