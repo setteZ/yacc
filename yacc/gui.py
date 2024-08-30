@@ -351,17 +351,11 @@ class Gui(tk.Frame):
         tk.messagebox.showinfo("info", message)
 
     def __upload_dcf(self):
-        wait_upload = tk.Tk()
-        wait_label = tk.Label(wait_upload, text="wait...")
-        wait_label.pack()
         try:
-            # wait_upload.withdraw()
             self.device.upload_dcf()
         except Exception as err:  # pylint: disable=broad-exception-caught
-            # wait_upload.destroy()
             tk.messagebox.showerror("dcf upload", err)
         else:
-            # wait_upload.destroy()
             tk.messagebox.showinfo("dcf upload", "done")
 
     def __download_dcf(self):
