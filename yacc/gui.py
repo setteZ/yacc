@@ -104,7 +104,7 @@ class Gui(tk.Frame):
         file_frame.grid(column=0, row=0)
 
         self.file_str_entry = tk.StringVar(file_frame)
-        self.file_str_entry.set(os.path.join(os.getcwd(), self.eds_file))
+        self.file_str_entry.set(self.eds_file)
 
         file_entry = tk.Entry(file_frame, textvariable=self.file_str_entry)
         file_entry.grid(column=0, row=0)
@@ -304,7 +304,7 @@ class Gui(tk.Frame):
             else:
                 config = {
                     "object_dictionary": {
-                        "filename": self.file_str_entry.get().split(os.getcwd())[1][1:],
+                        "filename": self.file_str_entry.get()
                     },
                     "can": {
                         "interface": self.interface_variable.get(),
