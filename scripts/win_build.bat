@@ -24,6 +24,7 @@ for /f "tokens=2 delims==" %%j in ("!linea!") do (
     set "version=%%j"
 )
 
+set "versione=!versione:"=!"
 set "version=%version:~1%"
 set "zip_name=yacc_%version%_windows_%PROCESSOR_ARCHITECTURE%.zip"
 echo %zip_name%
