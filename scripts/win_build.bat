@@ -26,7 +26,8 @@ for /f "tokens=2 delims==" %%j in ("!linea!") do (
 
 set "version=%version:~1%"
 set "zip_name=yacc_%version%_windows_%PROCESSOR_ARCHITECTURE%.zip"
+echo %zip_name%
 mkdir .\publish
 cd dist
-zip %zip_name% yacc.exe
+7z a %zip_name% yacc.exe
 move %new_name% ..\publish 
