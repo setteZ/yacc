@@ -5,7 +5,28 @@ pip install .
 pip install .[build]
 if exist "dist\" rm -r dist\
 pyinstaller --clean --console --hide-console hide-late --noupx --icon=.\media\yacc.ico --add-binary media\y.ico:media --onefile .\yacc\yacc.py -p .\yacc
-if %errorlevel% equ 0 (
-    rm -r build\
+if %errorlevel% neq 0 (
+    echo "there's been an error"
+    goto :eof
 )
+rm -r build\
 call deactivate
+
+setlocal enabledelayedexpansion
+
+set "file_input=..\\yacc\\yacc\\__init__.py"
+
+for /f "tokens=*" %%i in ('findstr "__version__" "%file_input%"') do (
+    set "linea=%%i"
+)
+
+for /f "tokens=2 delims==" %%j in ("!linea!") do (
+    set "version=%%j"
+)
+
+set "version=%version:~1%"
+set "zip_name=yacc_%version%_windows_%PROCESSOR_ARCHITECTURE%.zip"
+mkdir .\publish
+cd dist
+zip %zip_name% yacc.exe
+move %new_name% ..\publish 
