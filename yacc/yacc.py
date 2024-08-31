@@ -155,7 +155,7 @@ def main():
         root_path = os.path.dirname(__file__)
         if not(getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')):
             root_path = root_path[:-4]
-        icon_path = os.path.join(root_path,"media","yacc.ico")
+        icon_path = os.path.join(root_path,"media","y.ico")
         Gui(
             window,
             device,
