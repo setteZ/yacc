@@ -28,7 +28,7 @@ set "versione=!versione:"=!"
 set "version=%version:~1%"
 set "zip_name=yacc_%version%_windows_%PROCESSOR_ARCHITECTURE%.zip"
 echo %zip_name%
-mkdir .\publish
+mkdir publish
 cd dist
 7z a %zip_name% yacc.exe
-move %new_name% ..\publish 
+move %zip_name% ..\publish 
