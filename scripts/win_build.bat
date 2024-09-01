@@ -30,5 +30,22 @@ set "zip_name=yacc_%version%_windows_%PROCESSOR_ARCHITECTURE%.zip"
 echo %zip_name%
 mkdir publish
 cd dist
+where 7z /q
+if %errorlevel% neq 0 goto missing7z
 7z a %zip_name% yacc.exe
+goto publish_cmd
+:missing7z
+where zip /q
+if %errorlevel% neq 0 goto missingcompression
+zip %zip_name% yacc.exe
+goto publish_cmd
+:missingcompression
+echo missing a compression program
+goto exiterror
+
+:publish_cmd
 move %zip_name% ..\publish 
+goto :eof
+
+:exiterror
+exit /b 1
