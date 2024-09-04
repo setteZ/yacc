@@ -103,7 +103,6 @@ def main():
             print(f"error: {err}")
             sys.exit(1)
         else:
-            print("done")
             sys.exit(0)
         finally:
             device.disconnect()
@@ -129,12 +128,11 @@ def main():
             print(f"error: {err}")
             sys.exit(1)
         else:
-            print("done", end="")
             if args.save:
                 device.save()
-                print(" and saved")
+                print("saved")
             else:
-                print("\nremember to save (if needed)")
+                print("remember to save (if needed)")
             sys.exit(0)
         finally:
             device.disconnect()
