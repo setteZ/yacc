@@ -22,6 +22,9 @@ from gui import Gui
 from device import Device
 from __init__ import __version__ as VERSION
 
+# dependancies
+from tqdm import tqdm
+
 # for pyinstaller
 from can.interfaces import kvaser
 from can.interfaces import ixxat
@@ -91,8 +94,11 @@ def main():
             sys.exit(1)
 
         print("uploading from the device...")
+        iteration = device.get_objdict_elements(args.file)
         try:
-            device.upload_dcf()
+            with tqdm(total=iteration) as pbar:
+                for _ in device.upload_dcf(True):
+                    pbar.update(1)
         except Exception as err:  # pylint: disable=broad-exception-caught
             print(f"error: {err}")
             sys.exit(1)
@@ -114,8 +120,11 @@ def main():
             sys.exit(1)
 
         print("downloading to the device...")
+        iteration = device.get_objdict_elements(args.file)
         try:
-            device.download_dcf(args.file)
+            with tqdm(total=iteration) as pbar:
+                for _ in device.download_dcf(args.file, True):
+                    pbar.update(1)
         except Exception as err:  # pylint: disable=broad-exception-caught
             print(f"error: {err}")
             sys.exit(1)

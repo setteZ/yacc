@@ -213,7 +213,7 @@ class Device:
             obj = obj[entry_name]
         return obj.data_type
 
-    def download_dcf(self, filename: str):
+    def download_dcf(self, filename: str, generate_iterator=False):
         """
         function to download a dcf file
         """
@@ -241,6 +241,9 @@ class Device:
                                 raise Exception(  # pylint: disable=broad-exception-raised
                                     message
                                 ) from err
+                    if generate_iterator:
+                        yield
+
             if isinstance(obj, canopen.objectdictionary.ODVariable):
                 subidx = obj.subindex
                 if obj.access_type == "rw":
@@ -259,8 +262,25 @@ class Device:
                             raise Exception(  # pylint: disable=broad-exception-raised
                                 message
                             ) from err
+                if generate_iterator:
+                    yield
 
-    def upload_dcf(self):
+    def get_objdict_elements(self, filename: str):
+        """
+        function to get the number of elemnts present in the obj file
+        """
+        number_of_elements = 0
+        od = canopen.import_od(filename)
+        for obj in od.values():
+            if isinstance(obj, canopen.objectdictionary.ODRecord):
+                number_of_elements += len(obj.keys())
+
+            if isinstance(obj, canopen.objectdictionary.ODVariable):
+                number_of_elements += 1
+
+        return number_of_elements
+
+    def upload_dcf(self, generate_iterator=False):
         """
         function to upload a dcf file
         """
@@ -280,6 +300,8 @@ class Device:
                     self.__node.object_dictionary[obj.index][
                         subobj.subindex
                     ].value_raw = value
+                    if generate_iterator:
+                        yield
 
             if isinstance(obj, canopen.objectdictionary.ODVariable):
                 try:
@@ -290,6 +312,8 @@ class Device:
                     ) from err
                 value = self.__node.object_dictionary[obj.index].decode_raw(value)
                 self.__node.object_dictionary[obj.index].value_raw = value
+                if generate_iterator:
+                    yield
         canopen.objectdictionary.export_od(
             self.__node.object_dictionary, "upload.dcf", "dcf"
         )
