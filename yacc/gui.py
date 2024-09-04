@@ -354,12 +354,26 @@ class Gui(tk.Frame):
         tk.messagebox.showinfo("info", message)
 
     def __upload_dcf(self):
+        wait_msg = tk.Tk()
+        wait_msg.title("")
+        wait_msg.iconbitmap(self.icon)
+        wait_label = tk.Label(wait_msg, text="Uploading...")
+        wait_label.grid(column=0, row=0)
+        iteration = self.device.get_objdict_elements(None)
+        pb = ttk.Progressbar(wait_msg, orient=tk.HORIZONTAL, length=iteration, mode="determinate")
+        pb.grid(column=0, row=1)
         try:
+            for _ in self.device.upload_dcf(True):
+                wait_msg.update_idletasks()
+                pb['value'] += 1
+                pb.update()
             self.device.upload_dcf()
         except Exception as err:  # pylint: disable=broad-exception-caught
             tk.messagebox.showerror("dcf upload", err)
         else:
             tk.messagebox.showinfo("dcf upload", "done")
+        finally:
+            wait_msg.destroy()
 
     def __download_dcf(self):
 
