@@ -64,7 +64,7 @@ class Device:
         self.__node.nmt.wait_for_heartbeat()
         assert self.__node.nmt.state == "PRE-OPERATIONAL"
         cobid = self.__node.sdo.upload(idx, 0x01)
-        cobid_disabled = (int(cobid.hex(), 16) | 0x16).to_bytes(4, "big")
+        cobid_disabled = (int(cobid.hex(), 16) | 0x80).to_bytes(4, "big")
         cobid = self.__node.sdo.download(idx, 0x01, cobid_disabled)
 
     def set_objdict(self, objdict):
