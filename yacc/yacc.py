@@ -46,8 +46,10 @@ def main():
 
     if args.info:
         logging.basicConfig(level=logging.INFO)
-    if args.debug:
+    elif args.debug:
         logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.disable(logging.CRITICAL)
 
     eds_file = []
     current_dir = os.getcwd()
