@@ -265,12 +265,15 @@ class Device:
                 if generate_iterator:
                     yield
 
-    def get_objdict_elements(self, filename: str):
+    def get_objdict_elements(self, filename: str | None = None):
         """
         function to get the number of elemnts present in the obj file
         """
         number_of_elements = 0
-        od = canopen.import_od(filename)
+        if filename:
+            od = canopen.import_od(filename)
+        else:
+            od = self.__node.object_dictionary
         for obj in od.values():
             if isinstance(obj, canopen.objectdictionary.ODRecord):
                 number_of_elements += len(obj.keys())
