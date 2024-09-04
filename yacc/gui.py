@@ -6,6 +6,7 @@ import logging
 import os
 import tkinter as tk
 from tkinter import filedialog as fd
+from tkinter import ttk
 import struct
 
 
@@ -60,6 +61,8 @@ class Gui(tk.Frame):
         self.value_float_entry = None
         self.value_hex_entry = None
         self.save_button = None
+
+        self.icon = icon
 
         self.parent.iconbitmap(icon)
         self.parent.title("")
@@ -365,8 +368,19 @@ class Gui(tk.Frame):
         filename = fd.askopenfilename(
             title="Select .dcf file", initialdir=os.getcwd(), filetypes=filetypes
         )
+        wait_msg = tk.Tk()
+        wait_msg.title("")
+        wait_msg.iconbitmap(self.icon)
+        wait_label = tk.Label(wait_msg, text="Downloading...")
+        wait_label.grid(column=0, row=0)
+        iteration = self.device.get_objdict_elements(filename)
+        pb = ttk.Progressbar(wait_msg, orient=tk.HORIZONTAL, length=iteration, mode="determinate")
+        pb.grid(column=0, row=1)
         try:
-            self.device.download_dcf(filename)
+            for _ in self.device.download_dcf(filename, True):
+                wait_msg.update_idletasks()
+                pb['value'] += 1
+                pb.update()
         except Exception as err:  # pylint: disable=broad-exception-caught
             tk.messagebox.showerror("dcf download", err)
         else:
@@ -375,6 +389,8 @@ class Gui(tk.Frame):
             )
             if answer == tk.messagebox.YES:
                 self.device.save()
+        finally:
+            wait_msg.destroy()
 
     def __populate_parent(self):
         """
