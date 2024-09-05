@@ -4,6 +4,7 @@ Yet another CANopen configurator
 
 import argparse
 import logging
+import platform
 import os
 import sys
 import tkinter as tk
@@ -165,6 +166,8 @@ def main():
         if not (getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")):
             root_path = root_path[:-4]
         icon_path = os.path.join(root_path, "media", "y.ico")
+        if platform.system() == "Linux":
+            icon_path = None
         Gui(
             window,
             device,
