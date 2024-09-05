@@ -183,6 +183,6 @@ if __name__ == "__main__":
         main()
     except Exception as err:
         with open("log.txt", mode="a", encoding="utf-8") as fp:
-            fp.write(err)
+            fp.write(f"{err}")
         print("A log file has been generated for an unexpected error.")
         print("Please repor it to https://github.com/setteZ/yacc")
