@@ -51,9 +51,31 @@ class Device:
         self.__network = None
         self.__node = None
 
+    def __pdo_enable(self, index):
+        """
+        method to enable the PDO, and return the previous state of the pdo
+        """
+        major = index & 0xFF00
+        minor = index & 0x00FF
+        if major in [1400, 0x1600]:
+            transmission_idx = 0x1400
+        elif major in [1800, 0x1A00]:
+            transmission_idx = 0x1800
+        transmission_idx += minor
+        self.__node.nmt.state = "PRE-OPERATIONAL"
+        self.__node.nmt.wait_for_heartbeat()
+        assert self.__node.nmt.state == "PRE-OPERATIONAL"
+        cobid = self.__node.sdo.upload(transmission_idx, 0x01)
+        cobid_int = int(cobid.hex(), 16)
+        if cobid_int & 0x80000000:
+            cobid_enabled = (int(cobid.hex(), 16) & 0xFFFFFF7F).to_bytes(4, "big")
+            cobid = self.__node.sdo.download(transmission_idx, 0x01, cobid_enabled)
+            return False
+        return True
+
     def __pdo_disable(self, index):
         """
-        method to disable the PDO to enable its change
+        method to disable the PDO, and return the previous state of the pdo
         """
         major = index & 0xFF00
         minor = index & 0x00FF
@@ -70,6 +92,8 @@ class Device:
         if not cobid_int & 0x8000:
             cobid_disabled = (int(cobid.hex(), 16) | 0x80).to_bytes(4, "big")
             cobid = self.__node.sdo.download(transmission_idx, 0x01, cobid_disabled)
+            return True
+        return False
 
     def set_objdict(self, objdict):
         """
@@ -224,8 +248,9 @@ class Device:
                 for subobj in obj.values():
                     subidx = subobj.subindex
                     if subobj.access_type == "rw":
+                        was_enabled = False
                         if (idx & 0xFF00) in [0x1400, 0x1600, 0x1800, 0x1A00]:
-                            self.__pdo_disable(idx)
+                            was_enabled = self.__pdo_disable(idx)
                         value = od[idx][subidx].value
                         try:
                             raw = od[idx][subidx].encode_raw(value)
@@ -240,6 +265,8 @@ class Device:
                             raise Exception(  # pylint: disable=broad-exception-raised
                                 message
                             ) from err
+                        if was_enabled:
+                            self.__pdo_enable(idx)
                     if generate_iterator:
                         yield
 
