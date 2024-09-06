@@ -268,19 +268,60 @@ class Gui(tk.Frame):
 
     def __write_action(self):
         logging.info("write action")
+
+        if self.value_hex_text.get() != "":
+            data_hex = self.value_hex_text.get()
+            if len(data_hex) % 2:
+                data_hex = f"0{data_hex}"
+            try:
+                data_hex = bytes.fromhex(data_hex)[::-1]
+            except Exception:
+                tk.messagebox.showerror("data", "wrong hex vaue")
+                return
+            data_length = len(data_hex)
+        elif self.value_float_text.get() != "":
+            data_length = 4
+            try:
+                data_hex = struct.pack("<f", float(self.value_float_text.get()))
+            except Exception:
+                tk.messagebox.showerror("data", "wrong float vaue")
+                return
+        elif self.value_unsigned_text.get() != "":
+            try:
+                data_length = int(self.length_text.get())
+            except Exception:
+                tk.messagebox.showerror("data", "wrong length")
+                return
+            try:
+                data_hex = int(self.value_unsigned_text.get()).to_bytes(data_length, "little", signed=False)
+            except Exception:
+                tk.messagebox.showerror("data", "wrong unsigned vaue")
+                return
+        elif self.value_signed_text.get() != "":
+            try:
+                data_length = int(self.length_text.get())
+            except Exception:
+                tk.messagebox.showerror("data", "wrong length")
+                return
+            try:
+                data_hex = int(self.value_signed_text.get()).to_bytes(data_length, "little", signed=True)
+            except Exception:
+                tk.messagebox.showerror("data", "wrong signed value")
+                return
+        else:
+            tk.messagebox.showerror("data", "missing data")
+            return
         try:
-            data = int(self.value_hex_text.get(), 16).to_bytes(
-                int(self.length_text.get()), "little"
-            )
             self.device.write_entry(
                 index=int(self.idx_text.get(), 16),
                 subindex=int(self.sub_text.get(), 16),
-                data=data,
+                data=data_hex,
             )
         except Exception as err:  # pylint: disable=broad-exception-caught
             logging.debug(err)
             tk.messagebox.showerror("write", "error while writing")
         else:
+            self.length_text.set("")
             self.value_unsigned_text.set("")
             self.value_signed_text.set("")
             self.value_float_text.set("")
@@ -537,7 +578,7 @@ class Gui(tk.Frame):
             value_frame, textvariable=self.value_unsigned_text
         )
         self.value_unsigned_entry.grid(column=1, row=0)
-        self.value_unsigned_entry.bind("<Return>", self.__unsigned_typing)
+        self.value_unsigned_entry.bind("<KeyRelease>", self.__unsigned_typing)
 
         value_signed_label = tk.Label(value_frame, text="signed")
         value_signed_label.grid(column=0, row=1)
@@ -546,7 +587,7 @@ class Gui(tk.Frame):
             value_frame, textvariable=self.value_signed_text
         )
         self.value_signed_entry.grid(column=1, row=1)
-        self.value_signed_entry.bind("<Return>", self.__signed_typing)
+        self.value_signed_entry.bind("<KeyRelease>", self.__signed_typing)
 
         value_float_label = tk.Label(value_frame, text="float")
         value_float_label.grid(column=0, row=2)
@@ -555,14 +596,14 @@ class Gui(tk.Frame):
             value_frame, textvariable=self.value_float_text
         )
         self.value_float_entry.grid(column=1, row=2)
-        self.value_float_entry.bind("<Return>", self.__float_typing)
+        self.value_float_entry.bind("<KeyRelease>", self.__float_typing)
 
         value_hex_label = tk.Label(value_frame, text="hex")
         value_hex_label.grid(column=0, row=3)
         self.value_hex_text = tk.StringVar()
         self.value_hex_entry = tk.Entry(value_frame, textvariable=self.value_hex_text)
         self.value_hex_entry.grid(column=1, row=3)
-        self.value_hex_entry.bind("<Return>", self.__hex_typing)
+        self.value_hex_entry.bind("<KeyRelease>", self.__hex_typing)
 
         # main button frame
 
@@ -585,22 +626,9 @@ class Gui(tk.Frame):
         function to convert from unsigned
         """
         logging.info("unsigned entered")
-        try:
-            data_length = int(self.length_text.get())
-        except Exception as err:  # pylint: disable=broad-exception-caught
-            logging.debug(err)
-            tk.messagebox.showerror("data", "wrong lenght")
-        else:
-            try:
-                data_unsigned = int(self.value_unsigned_entry.get(), 10)
-            except Exception as err:  # pylint: disable=broad-exception-caught
-                logging.debug(err)
-                tk.messagebox.showerror("data", "wrong unsigned value")
-            else:
-                data_hex = f"{data_unsigned:0{data_length*2}x}"
-                self.value_hex_text.set(data_hex)
-                self.value_signed_text.set("-")
-                self.value_float_text.set("-")
+        self.value_signed_text.set("")
+        self.value_float_text.set("")
+        self.value_hex_text.set("")
         self.value_unsigned_entry.config(fg="black")
         self.value_signed_entry.config(fg="black")
         self.value_float_entry.config(fg="black")
@@ -611,32 +639,23 @@ class Gui(tk.Frame):
         function to convert from signed
         """
         logging.info("signed entered")
-        self.value_unsigned_text.set("-")
-        self.value_signed_text.set("-")
-        self.value_float_text.set("-")
-        self.value_hex_text.set("-")
+        self.value_unsigned_text.set("")
+        self.value_float_text.set("")
+        self.value_hex_text.set("")
         self.value_unsigned_entry.config(fg="black")
         self.value_signed_entry.config(fg="black")
         self.value_float_entry.config(fg="black")
         self.value_hex_entry.config(fg="black")
-        tk.messagebox.showinfo("data", "signed conversion not yet implemented")
 
     def __float_typing(self, *args):
         """
         function to convert from float
         """
         logging.info("float entered")
-        try:
-            data_float = float(self.value_float_text.get())
-        except Exception as err:  # pylint: disable=broad-exception-caught
-            logging.debug(err)
-            tk.messagebox.showerror("data", "wrong float")
-        else:
-            data_bytes = struct.pack(">f", data_float)
-            self.value_hex_text.set(data_bytes.hex())
-            self.value_unsigned_text.set("-")
-            self.value_signed_text.set("-")
-            self.length_text.set(4)
+        self.length_text.set("")
+        self.value_unsigned_text.set("")
+        self.value_signed_text.set("")
+        self.value_hex_text.set("")
         self.value_unsigned_entry.config(fg="black")
         self.value_signed_entry.config(fg="black")
         self.value_float_entry.config(fg="black")
@@ -647,20 +666,10 @@ class Gui(tk.Frame):
         function to convert from hex
         """
         logging.info("hex entered")
-        data_hex = self.value_hex_text.get()
-        if len(data_hex) % 2:
-            data_hex = f"0{data_hex}"
-            self.value_hex_text.set(data_hex)
-        data_bytes = bytes.fromhex(data_hex)
-        data_length = len(data_bytes)
-        ba = bytearray(data_bytes)
-        "a".encode()
-        ba.reverse()
-        data_unsigned = int.from_bytes(bytes=data_bytes, byteorder="little")
-        self.value_unsigned_text.set(data_unsigned)
-        if data_length == 4:
-            self.value_float_text.set(struct.unpack("<f", ba)[0])
-        self.length_text.set(str(data_length))
+        self.length_text.set("")
+        self.value_unsigned_text.set("")
+        self.value_signed_text.set("")
+        self.value_float_text.set("")
         self.value_unsigned_entry.config(fg="black")
         self.value_signed_entry.config(fg="black")
         self.value_float_entry.config(fg="black")
