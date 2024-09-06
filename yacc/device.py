@@ -233,14 +233,13 @@ class Device:
                             raise Exception(  # pylint: disable=broad-exception-raised
                                 f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
                             ) from err
-                        else:
-                            try:
-                                self.__node.sdo.download(idx, subidx, raw)
-                            except Exception as err:
-                                message = f"problem writing {raw} to 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}"
-                                raise Exception(  # pylint: disable=broad-exception-raised
-                                    message
-                                ) from err
+                        try:
+                            self.__node.sdo.download(idx, subidx, raw)
+                        except Exception as err:
+                            message = f"problem writing {raw} to 0x{idx:04X} 0x{subidx:02X} {subobj.name}: {err}"
+                            raise Exception(  # pylint: disable=broad-exception-raised
+                                message
+                            ) from err
                     if generate_iterator:
                         yield
 
@@ -254,14 +253,13 @@ class Device:
                         raise Exception(  # pylint: disable=broad-exception-raised
                             f"problem with the value of 0x{idx:04X} 0x{subidx:02X}: {err}"
                         ) from err
-                    else:
-                        try:
-                            self.__node.sdo.download(idx, subidx, raw)
-                        except Exception as err:
-                            message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {obj.name}: {err}"
-                            raise Exception(  # pylint: disable=broad-exception-raised
-                                message
-                            ) from err
+                    try:
+                        self.__node.sdo.download(idx, subidx, raw)
+                    except Exception as err:
+                        message = f"problem writing 0x{idx:04X} 0x{subidx:02X} {obj.name}: {err}"
+                        raise Exception(  # pylint: disable=broad-exception-raised
+                            message
+                        ) from err
                 if generate_iterator:
                     yield
 
