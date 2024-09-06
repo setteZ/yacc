@@ -26,11 +26,6 @@ from __init__ import __version__ as VERSION
 # dependancies
 from tqdm import tqdm
 
-# for pyinstaller
-from can.interfaces import kvaser
-from can.interfaces import ixxat
-from can.interfaces import pcan
-
 
 def main():
     """

@@ -4,7 +4,7 @@ call .venv_build\Scripts\activate
 pip install .
 pip install .[build]
 if exist "dist\" rm -r dist\
-pyinstaller --clean --console --hide-console hide-late --noupx --icon=.\media\yacc.ico --add-binary media\y.ico:media --onefile .\yacc\yacc.py -p .\yacc
+pyinstaller --clean --console --hide-console hide-late --noupx --icon=.\media\yacc.ico --add-binary media\y.ico:media --onefile .\yacc\yacc.py -p .\yacc --hidden-import can.interfaces.kvaser --hidden-import can.interfaces.ixxat --hidden-import can.interfaces.pcan
 if %errorlevel% neq 0 (
     echo "there's been an error"
     goto :eof
