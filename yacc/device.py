@@ -67,7 +67,7 @@ class Device:
         assert self.__node.nmt.state == "PRE-OPERATIONAL"
         cobid = self.__node.sdo.upload(transmission_idx, 0x01)
         cobid_int = int(cobid.hex(), 16)
-        if cobid_int & 0x80000000:
+        if cobid_int & 0x80:
             cobid_enabled = (int(cobid.hex(), 16) & 0xFFFFFF7F).to_bytes(4, "big")
             cobid = self.__node.sdo.download(transmission_idx, 0x01, cobid_enabled)
             return False
@@ -89,7 +89,7 @@ class Device:
         assert self.__node.nmt.state == "PRE-OPERATIONAL"
         cobid = self.__node.sdo.upload(transmission_idx, 0x01)
         cobid_int = int(cobid.hex(), 16)
-        if not cobid_int & 0x8000:
+        if not cobid_int & 0x80:
             cobid_disabled = (int(cobid.hex(), 16) | 0x80).to_bytes(4, "big")
             cobid = self.__node.sdo.download(transmission_idx, 0x01, cobid_disabled)
             return True
