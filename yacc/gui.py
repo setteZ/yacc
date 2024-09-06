@@ -293,7 +293,9 @@ class Gui(tk.Frame):
                 tk.messagebox.showerror("data", "wrong length")
                 return
             try:
-                data_hex = int(self.value_unsigned_text.get()).to_bytes(data_length, "little", signed=False)
+                data_hex = int(self.value_unsigned_text.get()).to_bytes(
+                    data_length, "little", signed=False
+                )
             except Exception:
                 tk.messagebox.showerror("data", "wrong unsigned vaue")
                 return
@@ -304,7 +306,9 @@ class Gui(tk.Frame):
                 tk.messagebox.showerror("data", "wrong length")
                 return
             try:
-                data_hex = int(self.value_signed_text.get()).to_bytes(data_length, "little", signed=True)
+                data_hex = int(self.value_signed_text.get()).to_bytes(
+                    data_length, "little", signed=True
+                )
             except Exception:
                 tk.messagebox.showerror("data", "wrong signed value")
                 return
@@ -350,9 +354,7 @@ class Gui(tk.Frame):
                 tk.messagebox.showerror("connect", "I can't connect to the device")
             else:
                 config = {
-                    "object_dictionary": {
-                        "filename": self.file_str_entry.get()
-                    },
+                    "object_dictionary": {"filename": self.file_str_entry.get()},
                     "can": {
                         "interface": self.interface_variable.get(),
                         "baudrate": int(self.variable_br.get()),
@@ -401,12 +403,14 @@ class Gui(tk.Frame):
         wait_label = tk.Label(wait_msg, text="Uploading...")
         wait_label.grid(column=0, row=0)
         iteration = self.device.get_objdict_elements(None)
-        pb = ttk.Progressbar(wait_msg, orient=tk.HORIZONTAL, length=iteration, mode="determinate")
+        pb = ttk.Progressbar(
+            wait_msg, orient=tk.HORIZONTAL, length=iteration, mode="determinate"
+        )
         pb.grid(column=0, row=1)
         try:
             for _ in self.device.upload_dcf(True):
                 wait_msg.update_idletasks()
-                pb['value'] += 1
+                pb["value"] += 1
                 pb.update()
             self.device.upload_dcf()
         except Exception as err:  # pylint: disable=broad-exception-caught
@@ -429,12 +433,14 @@ class Gui(tk.Frame):
         wait_label = tk.Label(wait_msg, text="Downloading...")
         wait_label.grid(column=0, row=0)
         iteration = self.device.get_objdict_elements(filename)
-        pb = ttk.Progressbar(wait_msg, orient=tk.HORIZONTAL, length=iteration, mode="determinate")
+        pb = ttk.Progressbar(
+            wait_msg, orient=tk.HORIZONTAL, length=iteration, mode="determinate"
+        )
         pb.grid(column=0, row=1)
         try:
             for _ in self.device.download_dcf(filename, True):
                 wait_msg.update_idletasks()
-                pb['value'] += 1
+                pb["value"] += 1
                 pb.update()
         except Exception as err:  # pylint: disable=broad-exception-caught
             tk.messagebox.showerror("dcf download", err)
