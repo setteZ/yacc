@@ -101,11 +101,7 @@ class Device:
         """
         major = index & 0xFF00
         minor = index & 0x00FF
-        if major == 0x1600:
-            transmission_idx = 0x1400
-        elif major == 0x1A00:
-            transmission_idx = 0x1800
-        transmission_idx += minor
+        transmission_idx = major + minor
         self.__node.nmt.state = "PRE-OPERATIONAL"
         self.__node.nmt.wait_for_heartbeat()
         assert self.__node.nmt.state == "PRE-OPERATIONAL"
