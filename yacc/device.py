@@ -57,9 +57,9 @@ class Device:
         """
         major = index & 0xFF00
         minor = index & 0x00FF
-        if major in [1400, 0x1600]:
+        if major in [0x1400, 0x1600]:
             transmission_idx = 0x1400
-        elif major in [1800, 0x1A00]:
+        elif major in [0x1800, 0x1A00]:
             transmission_idx = 0x1800
         transmission_idx += minor
         self.__node.nmt.state = "PRE-OPERATIONAL"
@@ -79,9 +79,9 @@ class Device:
         """
         major = index & 0xFF00
         minor = index & 0x00FF
-        if major in [1400, 0x1600]:
+        if major in [0x1400, 0x1600]:
             transmission_idx = 0x1400
-        elif major in [1800, 0x1A00]:
+        elif major in [0x1800, 0x1A00]:
             transmission_idx = 0x1800
         transmission_idx += minor
         self.__node.nmt.state = "PRE-OPERATIONAL"
