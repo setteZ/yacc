@@ -287,7 +287,8 @@ class Device:
                             ) from err
                         if mapping_was_enabled:
                             try:
-                                raw = od[mapping_idx][0].encode_raw(value)
+                                value = od[idx][0].value
+                                raw = od[idx][0].encode_raw(value)
                             except Exception as err:
                                 raise Exception(  # pylint: disable=broad-exception-raised
                                     f"problem with the value of 0x{idx:04X} 0x00 to ri-enable the PDO mapping: {err}"
@@ -295,7 +296,7 @@ class Device:
                             try:
                                 self.__node.sdo.download(idx, 0, raw)
                             except Exception as err:
-                                message = f"problem writing {raw} to 0x{mapping_idx:04X} 0x00 {subobj.name} to ri-enable the PDO mapping: {err}"
+                                message = f"problem writing {raw} to 0x{idx:04X} 0x00 {subobj.name} to ri-enable the PDO mapping: {err}"
                                 raise Exception(  # pylint: disable=broad-exception-raised
                                     message
                                 ) from err
