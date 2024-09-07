@@ -285,10 +285,7 @@ class Device:
                             raise Exception(  # pylint: disable=broad-exception-raised
                                 message
                             ) from err
-                        if pdo_was_enabled:
-                            self.__pdo_enable(idx)
                         if mapping_was_enabled:
-                            mapping_idx = (idx & 0xFF00) - 0x0200
                             try:
                                 raw = od[mapping_idx][0].encode_raw(value)
                             except Exception as err:
@@ -302,6 +299,8 @@ class Device:
                                 raise Exception(  # pylint: disable=broad-exception-raised
                                     message
                                 ) from err
+                        if pdo_was_enabled:
+                            self.__pdo_enable(idx)
                     if generate_iterator:
                         yield
 
