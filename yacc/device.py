@@ -95,6 +95,27 @@ class Device:
             return True
         return False
 
+    def __pdo_mapping_disable(self, index):
+        """
+        method to disable the PDO, and return the previous state of the pdo
+        """
+        major = index & 0xFF00
+        minor = index & 0x00FF
+        if major == 0x1600:
+            transmission_idx = 0x1400
+        elif major == 0x1A00:
+            transmission_idx = 0x1800
+        transmission_idx += minor
+        self.__node.nmt.state = "PRE-OPERATIONAL"
+        self.__node.nmt.wait_for_heartbeat()
+        assert self.__node.nmt.state == "PRE-OPERATIONAL"
+        mapped_elements = self.__node.sdo.upload(transmission_idx, 0x00)
+        mapped_elements_int = int(mapped_elements.hex(), 16)
+        if mapped_elements_int:
+            cobid = self.__node.sdo.download(transmission_idx, 0x00, b"\x00")
+            return True
+        return False
+
     def set_objdict(self, objdict):
         """
         method to set the object dictionary aka eds file
@@ -248,9 +269,12 @@ class Device:
                 for subobj in obj.values():
                     subidx = subobj.subindex
                     if subobj.access_type == "rw":
-                        was_enabled = False
+                        pdo_was_enabled = False
+                        mapping_was_enabled = False
                         if (idx & 0xFF00) in [0x1400, 0x1600, 0x1800, 0x1A00]:
-                            was_enabled = self.__pdo_disable(idx)
+                            pdo_was_enabled = self.__pdo_disable(idx)
+                        if (idx & 0xFF00) in [0x1600, 0x1A00]:
+                            mapping_was_enabled = self.__pdo_mapping_disable(idx)
                         value = od[idx][subidx].value
                         try:
                             raw = od[idx][subidx].encode_raw(value)
@@ -265,8 +289,23 @@ class Device:
                             raise Exception(  # pylint: disable=broad-exception-raised
                                 message
                             ) from err
-                        if was_enabled:
+                        if pdo_was_enabled:
                             self.__pdo_enable(idx)
+                        if mapping_was_enabled:
+                            mapping_idx = (idx & 0xFF00) - 0x0200
+                            try:
+                                raw = od[mapping_idx][0].encode_raw(value)
+                            except Exception as err:
+                                raise Exception(  # pylint: disable=broad-exception-raised
+                                    f"problem with the value of 0x{idx:04X} 0x00 to ri-enable the PDO mapping: {err}"
+                                ) from err
+                            try:
+                                self.__node.sdo.download(idx, 0, raw)
+                            except Exception as err:
+                                message = f"problem writing {raw} to 0x{mapping_idx:04X} 0x00 {subobj.name} to ri-enable the PDO mapping: {err}"
+                                raise Exception(  # pylint: disable=broad-exception-raised
+                                    message
+                                ) from err
                     if generate_iterator:
                         yield
 
