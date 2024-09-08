@@ -10,30 +10,36 @@ YACC is a simple read&write CANopen parameter set written on top of the [canopen
 The [PEAK](https://www.peak-system.com/), [kvaser](https://kvaser.com/) and [ixxat](https://www.hms-networks.com/ixxat) devices are the possible selections: make sure to have the proper driver installed.
 
 ## Installation
-Clone the repository, create a virtual environment, activate it and install the requirements
-```bash
-git clone https://github.com/setteZ/yacc.git
-cd yacc
-python3 -m venv .venv
-source .venv/bin/activate
-pip install .
+### From the source
+Clone the repository
+```console
+$ git clone https://github.com/setteZ/yacc.git
 ```
-or you can install [uv](https://github.com/astral-sh/uv) and after cloning the repo you can use yacc with:
-```bash
-uv run yacc/yacc.py
+or [download](https://github.com/setteZ/yacc/archive/refs/heads/master.zip) the source code.\
+Create a virtual environment, activate it and install the dependencies
+```console
+$ cd yacc
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+$ pip install .
 ```
+or you can stop just after cloning the repo if you use [uv](https://github.com/astral-sh/uv).
 
+### As binary (for Windows users)
+Download the proper binary from the [Releases](https://github.com/setteZ/yacc/releases) page.
 
 ## Usage
 There are two way to use YACC:
-- a clean `yacc.py` will launch the GUI
-- a geek `yacc.py -h` will show you the CLI capability
+- a clean `python3 yacc.py`* will launch the GUI
+- a geek `python3 yacc -h`* will show you the CLI capability
+
+(*) `uv run yacc.py` if you are using [uv](https://github.com/astral-sh/uv), just `yacc` if you are using the binary
 
 ## Features
 There is the possibility to:
-1. upload form the device the configuration (starting from a .eds file)
-2. download into the device a specific configuration (the .dcf file)
-3. tell to the device to `save` the configuration
+1. `upload` the actual values of the parameters to a .dcf file
+2. `download` a .dcf file to the device
+3. request the device to `save` the actual values of the parameters
 
-Bonus: the GUI gives the possibility to read/write a single entry.
+Bonus: the GUI gives you the possibility to read and write a single entry.\
 That's all.
