@@ -158,6 +158,8 @@ class Device:
         self.__node = self.__network.add_node(
             node=self.__nodeid, object_dictionary=self.__filename
         )
+        self.__node.object_dictionary.node_id = self.__nodeid
+        self.__node.object_dictionary.bitrate = self.__baudrate * 1000
         self.__node.sdo.RESPONSE_TIMEOUT = 1
 
     def disconnect(self):
