@@ -32,7 +32,9 @@ def main():
     Main function
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("command", choices=["upload", "download", "save"], nargs="?")
+    parser.add_argument(
+        "command", choices=["upload", "download", "save", "default"], nargs="?"
+    )
     parser.add_argument("-f", "--file", default="")
     parser.add_argument("--save", action="store_true")
     parser.add_argument("--version", action="version", version=VERSION)
@@ -151,6 +153,32 @@ def main():
             sys.exit(1)
         else:
             print("done")
+            sys.exit(0)
+        finally:
+            device.disconnect()
+
+    if args.command == "default":
+        try:
+            device.connect()
+        except Exception as err:  # pylint: disable=broad-exception-caught
+            logging.debug(err)
+            print("I can't connect to the device")
+            sys.exit(1)
+
+        print("loading default")
+        try:
+            device.default()
+        except Exception as err:  # pylint: disable=broad-exception-caught
+            print(err)
+            sys.exit(1)
+        else:
+            print("done", end="")
+
+            if args.save:
+                device.save()
+                print("... and saved")
+            else:
+                print("remember to save (if needed)")
             sys.exit(0)
         finally:
             device.disconnect()
