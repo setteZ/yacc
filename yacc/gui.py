@@ -420,6 +420,14 @@ class Gui(tk.Frame):
         finally:
             wait_msg.destroy()
 
+    def __load_default(self):
+        try:
+            self.device.default()
+        except Exception as err:
+            tk.messagebox.showerror("load default", err)
+        else:
+            tk.messagebox.showinfo("load default", "done")
+
     def __download_dcf(self):
 
         filetypes = (("dcf files", "*.dcf"), ("All files", "*.*"))
@@ -481,6 +489,14 @@ class Gui(tk.Frame):
             command=self.__download_dcf,
         )
         menubar.add_cascade(label="Configuration", menu=config_menu, underline=0)
+
+        cmd_menu = tk.Menu(menubar, tearoff=False)
+
+        cmd_menu.add_command(
+            label="Load default",
+            command=self.__load_default,
+        )
+        menubar.add_cascade(label="Cmd", menu=cmd_menu, underline=1)
 
         help_menu = tk.Menu(menubar, tearoff=False)
 
