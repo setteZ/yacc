@@ -389,6 +389,12 @@ class Device:
         """
         self.__node.sdo.download(0x1010, 0x01, b"save")
 
+    def default(self):
+        """
+        load default request
+        """
+        self.__node.sdo.download(0x1011, 0x01, b"load")
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
