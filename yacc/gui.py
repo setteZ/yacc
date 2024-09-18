@@ -426,6 +426,11 @@ class Gui(tk.Frame):
         except Exception as err:
             tk.messagebox.showerror("load default", err)
         else:
+            answer = tk.messagebox.askquestion(
+                "load default", "done, do you wanna save?"
+            )
+            if answer == tk.messagebox.YES:
+                self.device.save()
             tk.messagebox.showinfo("load default", "done")
 
     def __download_dcf(self):
