@@ -184,4 +184,4 @@ if __name__ == "__main__":
         with open(LOGFILE, mode="a", encoding="utf-8") as fp:
             fp.write(f"{err}")
         print(f"A {LOGFILE} file has been generated for an unexpected error.")
-        print("Please repor it to https://github.com/setteZ/yacc")
+        print("Please report it to https://github.com/setteZ/yacc")
