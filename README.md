@@ -40,6 +40,7 @@ There is the possibility to:
 1. `upload` the actual values of the parameters to a .dcf file
 2. `download` a .dcf file to the device
 3. request the device to `save` the actual values of the parameters
+4. request the device to load the `default` values of the parameters
 
 Bonus: the GUI gives you the possibility to read and write a single entry.\
 That's all.
