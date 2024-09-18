@@ -36,7 +36,9 @@ def main():
         "command", choices=["upload", "download", "save", "default"], nargs="?"
     )
     parser.add_argument("-f", "--file", default="")
-    parser.add_argument("--save", action="store_true")
+    parser.add_argument(
+        "--save", action="store_true", help="save request after download/default"
+    )
     parser.add_argument("--version", action="version", version=VERSION)
     parser.add_argument("--debug", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--info", action="store_true", help=argparse.SUPPRESS)
