@@ -180,8 +180,8 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as err:
-        logfile = "yacc.log"
-        with open(logfile, mode="a", encoding="utf-8") as fp:
+        LOGFILE = "yacc.log"
+        with open(LOGFILE, mode="a", encoding="utf-8") as fp:
             fp.write(f"{err}")
-        print(f"A {logfile} file has been generated for an unexpected error.")
+        print(f"A {LOGFILE} file has been generated for an unexpected error.")
         print("Please repor it to https://github.com/setteZ/yacc")
