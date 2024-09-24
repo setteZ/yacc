@@ -116,6 +116,8 @@ class Device:
         """
         method to set the object dictionary aka eds file
         """
+        if objdict == "":
+            objdict = None
         self.__filename = objdict
 
     def set_baudrate(self, baudrate):
