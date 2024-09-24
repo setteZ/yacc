@@ -1,2 +1,9 @@
-### Fix
-- management of empty selection for object dictionary
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
