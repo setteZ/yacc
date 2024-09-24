@@ -26,7 +26,8 @@ for /f "tokens=2 delims==" %%j in ("!linea!") do (
 
 set "versione=!versione:"=!"
 set "version=%version:~1%"
-set "zip_name=yacc_%version%_windows_%PROCESSOR_ARCHITECTURE%.zip"
+for /f "delims=" %%s in ('python -c "import sys; print(sys.argv[1].lower())" %PROCESSOR_ARCHITECTURE%') do set PROC_ARCH=%%s
+set "zip_name=yacc_%version%_windows_%PROC_ARCH%.zip"
 echo %zip_name%
 mkdir publish
 cd dist
