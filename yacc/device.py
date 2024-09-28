@@ -5,6 +5,7 @@ Module for device interaction
 import dataclasses
 import logging
 import struct
+import time
 
 # requirements
 import canopen
@@ -381,8 +382,11 @@ class Device:
                 self.__node.object_dictionary[obj.index].value_raw = value
                 if generate_iterator:
                     yield
+
         canopen.objectdictionary.export_od(
-            self.__node.object_dictionary, "upload.dcf", "dcf"
+            self.__node.object_dictionary,
+            f"upload_{time.strftime('%y%m%d-%H%M%S', time.localtime())}.dcf",
+            "dcf",
         )
 
     def save(self):
