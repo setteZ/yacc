@@ -393,13 +393,13 @@ class Device:
         """
         save request
         """
-        self.__node.sdo.download(0x1010, 0x01, b"save")
+        self.__node.store(1)
 
     def default(self):
         """
         load default request
         """
-        self.__node.sdo.download(0x1011, 0x01, b"load")
+        self.__node.restore(1)
 
 
 if __name__ == "__main__":
