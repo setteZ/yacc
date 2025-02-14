@@ -11,6 +11,18 @@ import time
 import canopen
 
 
+class DeviceError(Exception):
+    """Exception raised for device error.
+
+    Attributes:
+        message -- explanation of the error
+    """
+
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 @dataclasses.dataclass
 class Data:
     """
@@ -62,6 +74,10 @@ class Device:
             transmission_idx = 0x1400
         elif major in [0x1800, 0x1A00]:
             transmission_idx = 0x1800
+        else:
+            raise DeviceError(
+                f"transmission_idx unexpected 0x{transmission_idx:04X} value in __pdo_enable"
+            )
         transmission_idx += minor
         self.__node.nmt.state = "PRE-OPERATIONAL"
         self.__node.nmt.wait_for_heartbeat()
@@ -84,6 +100,10 @@ class Device:
             transmission_idx = 0x1400
         elif major in [0x1800, 0x1A00]:
             transmission_idx = 0x1800
+        else:
+            raise DeviceError(
+                f"transmission_idx unexpected 0x{transmission_idx:04X} value in __pdo_enable"
+            )
         transmission_idx += minor
         self.__node.nmt.state = "PRE-OPERATIONAL"
         self.__node.nmt.wait_for_heartbeat()
