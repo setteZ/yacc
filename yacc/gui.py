@@ -113,6 +113,7 @@ class Gui(tk.Frame):
         self.file_str_entry.set(self.eds_file)
 
         file_entry = tk.Entry(file_frame, textvariable=self.file_str_entry)
+        file_entry.xview_moveto(1)
         file_entry.grid(column=0, row=0)
         file_button = tk.Button(
             file_frame, text="select file", command=self.__select_file
