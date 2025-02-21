@@ -382,13 +382,13 @@ class Device:
                 for subobj in obj.values():
                     try:
                         value = self.__node.sdo.upload(obj.index, subobj.subindex)
+                        value = self.__node.object_dictionary[obj.index][
+                            subobj.subindex
+                        ].decode_raw(value)
                     except Exception as err:
                         raise Exception(  # pylint: disable=broad-exception-raised
                             f"problem with 0x{obj.index:04X} 0x{subobj.subindex:02X}: {err}"
                         ) from err
-                    value = self.__node.object_dictionary[obj.index][
-                        subobj.subindex
-                    ].decode_raw(value)
                     self.__node.object_dictionary[obj.index][
                         subobj.subindex
                     ].value_raw = value
@@ -398,11 +398,11 @@ class Device:
             if isinstance(obj, canopen.objectdictionary.ODVariable):
                 try:
                     value = self.__node.sdo.upload(obj.index, obj.subindex)
+                    value = self.__node.object_dictionary[obj.index].decode_raw(value)
                 except Exception as err:
                     raise Exception(  # pylint: disable=broad-exception-raised
                         f"problem with 0x{obj.index:04X} 0x{obj.subindex:02X}: {err}"
                     ) from err
-                value = self.__node.object_dictionary[obj.index].decode_raw(value)
                 self.__node.object_dictionary[obj.index].value_raw = value
                 if generate_iterator:
                     yield
