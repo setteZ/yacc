@@ -286,11 +286,11 @@ class Device:
         od = canopen.import_od(filename)
         for obj in od.values():
             idx = obj.index
-            if idx in [0x1010, 0x1011]:
-                if generate_iterator:
-                    yield
-                continue
             if isinstance(obj, canopen.objectdictionary.ODRecord):
+                if idx in [0x1010, 0x1011]:
+                    if generate_iterator:
+                        yield
+                    continue
                 for subobj in obj.values():
                     subidx = subobj.subindex
                     if subobj.access_type == "rw":
